@@ -116,9 +116,7 @@ yTambien _ _        = False
 
 -- 3.3.d
 oBien :: Bool -> Bool -> Bool
-oBien True _ = True
-oBien _ True = True
-oBien _ _    = False
+oBien p q = negar (yTambien (negar p) (negar q))
 
 -- 4.1
 data Persona = P String Int
