@@ -113,8 +113,8 @@ implica _ _         = True
 
 -- 3.3.c
 yTambien :: Bool -> Bool -> Bool
-yTambien True True  = True
-yTambien _ _        = False
+yTambien True a   = a
+yTambien False _  = False
 
 -- 3.3.d
 oBien :: Bool -> Bool -> Bool
