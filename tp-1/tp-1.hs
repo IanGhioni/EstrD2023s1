@@ -192,7 +192,10 @@ unoSiElTipoCoincide _ _ 			= 0
 
 -- 4.2.c
 juntarPokemon :: (Entrenador, Entrenador) -> [Pokemon]
-juntarPokemon (e1, e2) = [(primerPokemon e1),(segundoPokemon e1),(primerPokemon e2),(segundoPokemon e2)]
+juntarPokemon (e1, e2) = listaDePokemonsDe e1 ++ listaDePokemonsDe e2
+
+listaDePokemonsDe :: Entrenador -> [Pokemon]
+listaDePokemonsDe (E _ p1 p2) = [p1,p2]
 
 --5.
 -- a.
