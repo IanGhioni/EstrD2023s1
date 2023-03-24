@@ -73,8 +73,10 @@ diaDeLaSemanaPorNumero 5 = Viernes
 diaDeLaSemanaPorNumero 6 = Sabado
 diaDeLaSemanaPorNumero 7 = Domingo
 
-primeroYUltimoDia :: (DiaDeLaSemana, DiaDeLaSemana) -> (DiaDeLaSemana, DiaDeLaSemana)
-primeroYUltimoDia (d1,d2) = (diaDeLaSemanaPorNumero (minDelPar (numeroDeDiaDeLaSemana d1, numeroDeDiaDeLaSemana d2) ), diaDeLaSemanaPorNumero ( maxDelPar ( (numeroDeDiaDeLaSemana d1, numeroDeDiaDeLaSemana d2) ) ) )
+primeroYUltimoDia :: (DiaDeLaSemana, DiaDeLaSemana) 
+primeroYUltimoDia = (Lunes,Domingo)
+
+
 
 
 -- Ejercicio 3.2.b
