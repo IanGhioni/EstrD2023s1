@@ -90,7 +90,7 @@ empiezaConM _ = False
 
 vieneDespues :: DiaDeLaSemana -> DiaDeLaSemana -> Bool
 vieneDespues Lunes Domingo = True
-vieneDespues d1 d2 = numeroDeDiaDeLaSemana d2 + 1 == numeroDeDiaDeLaSemana d1
+vieneDespues d1 d2 = numeroDeDiaDeLaSemana d1 > numeroDeDiaDeLaSemana d2 
 
 
 
