@@ -176,19 +176,17 @@ tipoSuperaA _ _ 			= False
  
 --4.2.b
 cantidadDePokemonDe :: TipoDePokemon -> Entrenador -> Int
-cantidadDePokemonDe tipoDelPokemon entrenador = (unoSiElTipoCoincide tipoDelPokemon (tipo (primerPokemon entrenador))) + (unoSiElTipoCoincide tipoDelPokemon (tipo (segundoPokemon entrenador))) 
+cantidadDePokemonDe t (E _ p1 p2) =  (unoSiTipoCoincideCeroSiNo t (tipo p1)) + (unoSiTipoCoincideCeroSiNo t (tipo p2))
+unoSiTipoCoincideCeroSiNo :: TipoDePokemon -> TipoDePokemon -> Int
+unoSiTipoCoincideCeroSiNo t1 t2 = if (sonDelMismoTipo t1 t2)
+								  then 1
+								  else 0
 
-primerPokemon :: Entrenador -> Pokemon
-primerPokemon (E _ primerPokemon _) = primerPokemon
-
-segundoPokemon :: Entrenador -> Pokemon
-segundoPokemon (E _ _ segundoPokemon) = segundoPokemon 
-
-unoSiElTipoCoincide :: TipoDePokemon -> TipoDePokemon -> Int
-unoSiElTipoCoincide Fuego Fuego 	= 1
-unoSiElTipoCoincide Agua Agua	 	= 1
-unoSiElTipoCoincide Planta Planta 	= 1
-unoSiElTipoCoincide _ _ 			= 0
+sonDelMismoTipo :: TipoDePokemon -> TipoDePokemon -> Bool
+sonDelMismoTipo  Fuego Fuego 	= True
+sonDelMismoTipo Agua Agua	 	= True 
+sonDelMismoTipo Planta Planta 	= True 
+sonDelMismoTipo _ _ 			= False
 
 -- 4.2.c
 juntarPokemon :: (Entrenador, Entrenador) -> [Pokemon]
