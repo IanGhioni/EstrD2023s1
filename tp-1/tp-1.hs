@@ -176,11 +176,12 @@ tipoSuperaA _ _ 			= False
  
 --4.2.b
 cantidadDePokemonDe :: TipoDePokemon -> Entrenador -> Int
-cantidadDePokemonDe t (E _ p1 p2) =  (unoSiTipoCoincideCeroSiNo t (tipo p1)) + (unoSiTipoCoincideCeroSiNo t (tipo p2))
-unoSiTipoCoincideCeroSiNo :: TipoDePokemon -> TipoDePokemon -> Int
-unoSiTipoCoincideCeroSiNo t1 t2 = if (sonDelMismoTipo t1 t2)
-								  then 1
-								  else 0
+cantidadDePokemonDe t (E _ p1 p2) =  (unoSiCeroSiNo (sonDelMismoTipo t (tipo p1))) + (unoSiCeroSiNo (sonDelMismoTipo t (tipo p2)))
+
+unoSiCeroSiNo :: Bool -> Int
+unoSiCeroSiNo bool = if (bool)
+					 then 1
+					 else 0
 
 sonDelMismoTipo :: TipoDePokemon -> TipoDePokemon -> Bool
 sonDelMismoTipo  Fuego Fuego 	= True
