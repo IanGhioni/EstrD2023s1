@@ -229,15 +229,6 @@ agregarACadaLista a []     = []
 agregarACadaLista a (l:ls) = [[a] ++ l] ++ agregarACadaLista a ls 
 
 
-ramaMasCorta :: Tree a -> [a]
-ramaMasCorta EmptyT = []
-ramaMasCorta (NodeT a t1 t2) = (a : ramaMasCorta (ramaMasCortaEntre t1 t2))
-
-ramaMasCortaEntre :: Tree a -> Tree a -> Tree a
-ramaMasCortaEntre t1 t2 = if ((heightT t1) <= (heightT t2))
-                          then t1
-                          else t2
-
 {-                         
                           7---E 
                          / \ 
