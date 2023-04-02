@@ -219,8 +219,15 @@ ramaMasLargaEntre t1 t2 = if ((heightT t1) > (heightT t2))
 
 todosLosCaminos :: Tree a -> [[a]]
 --Dado un árbol devuelve todos los caminos, es decir, los caminos desde la raiz hasta las hojas.
+
 todosLosCaminos EmptyT          = []
-todosLosCaminos (NodeT a t1 t2) = [[a] ++ (ramaMasLarga t1) , [a] ++ (ramaMasCorta t1) , [a] ++ (ramaMasLarga t2) , [a] ++ (ramaMasCorta t2)]
+todosLosCaminos (NodeT a EmptyT EmptyT) = [[a]]
+todosLosCaminos (NodeT a t1 t2) = (agregarACadaLista a (todosLosCaminos t1)) ++ (agregarACadaLista a (todosLosCaminos t2))
+
+agregarACadaLista :: a -> [[a]] -> [[a]]
+agregarACadaLista a []     = []
+agregarACadaLista a (l:ls) = [[a] ++ l] ++ agregarACadaLista a ls 
+
 
 ramaMasCorta :: Tree a -> [a]
 ramaMasCorta EmptyT = []
@@ -231,8 +238,39 @@ ramaMasCortaEntre t1 t2 = if ((heightT t1) <= (heightT t2))
                           then t1
                           else t2
 
-arbolTestCaminos = NodeT 1 (NodeT 2 (NodeT 7 EmptyT EmptyT) (NodeT 6 (NodeT 8 (NodeT 5 EmptyT EmptyT) EmptyT) EmptyT)) (NodeT 3 EmptyT (NodeT 5 EmptyT EmptyT))
--- Resultado esperado tras usar todos los caminos = [[1,2,7],[1,2,6,8],[1,3,5],[1,3,4]]
+{-                         
+                          7---E 
+                         / \ 
+  ______________________2   E
+ /                       \ 
+1          E              6--E  
+|         /                \  
+|       20                  8--E   
+|      /  \                  \  
+|     5    E                  35---E 
+|    / \    E                  \  
+|   /   \  /                    E   
+ \ /     10
+  3   E    \ 
+   \ /      E
+    4
+     \
+      E
+-}
+
+arbolTestCaminos = NodeT 1 (
+                        NodeT 2 (
+                            NodeT 7 EmptyT EmptyT) (
+                            NodeT 6 (
+                                NodeT 8 (
+                                    NodeT 35 EmptyT EmptyT) EmptyT) 
+                            EmptyT)) (
+                        NodeT 3 (NodeT 4 EmptyT EmptyT) (
+                            NodeT 5 (
+                                NodeT 20 EmptyT EmptyT) (
+                                NodeT 10 EmptyT EmptyT)))
+-- Resultado esperado tras usar todosLosCaminos = [[1,2,7],[1,2,6,8],[1,3,5,10],[1,3,5,20],[1,3,4]] en cualquier orden
+
 
 data ExpA = Valor Int | Sum ExpA ExpA | Prod ExpA ExpA | Neg ExpA
     deriving Show
