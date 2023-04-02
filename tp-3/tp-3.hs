@@ -188,7 +188,7 @@ mirrorT (NodeT a t1 t2) = (NodeT a (mirrorT t2) (mirrorT t1))
 
 toList :: Tree a -> [a]
 toList EmptyT           = []
-toList (NodeT a t1 t2)  = [a] ++ (toList t1) ++ (toList t2)  
+toList (NodeT a t1 t2)  = (toList t1) ++ [a] ++ (toList t2)  
 
 levelN :: Int -> Tree a -> [a]
 levelN _          EmptyT = []
@@ -217,10 +217,22 @@ ramaMasLargaEntre t1 t2 = if ((heightT t1) > (heightT t2))
                           else t2
 
 
---todosLosCaminos :: Tree a -> [[a]]
+todosLosCaminos :: Tree a -> [[a]]
 --Dado un árbol devuelve todos los caminos, es decir, los caminos desde la raiz hasta las hojas.
+todosLosCaminos EmptyT          = []
+todosLosCaminos (NodeT a t1 t2) = [[a] ++ (ramaMasLarga t1) , [a] ++ (ramaMasCorta t1) , [a] ++ (ramaMasLarga t2) , [a] ++ (ramaMasCorta t2)]
 
+ramaMasCorta :: Tree a -> [a]
+ramaMasCorta EmptyT = []
+ramaMasCorta (NodeT a t1 t2) = (a : ramaMasCorta (ramaMasCortaEntre t1 t2))
 
+ramaMasCortaEntre :: Tree a -> Tree a -> Tree a
+ramaMasCortaEntre t1 t2 = if ((heightT t1) <= (heightT t2))
+                          then t1
+                          else t2
+
+arbolTestCaminos = NodeT 1 (NodeT 2 (NodeT 7 EmptyT EmptyT) (NodeT 6 (NodeT 8 (NodeT 5 EmptyT EmptyT) EmptyT) EmptyT)) (NodeT 3 EmptyT (NodeT 5 EmptyT EmptyT))
+-- Resultado esperado tras usar todos los caminos = [[1,2,7],[1,2,6,8],[1,3,5],[1,3,4]]
 
 data ExpA = Valor Int | Sum ExpA ExpA | Prod ExpA ExpA | Neg ExpA
     deriving Show
