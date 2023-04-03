@@ -81,9 +81,12 @@ elMinimo :: Ord a => [a] -> a
 -- Precondicion: La lista dada no debe ser una lista vacia
 elMinimo []     = error "La lista no puede estar vacia"
 elMinimo (x:[]) = x
-elMinimo (x:xs) = if x< elMinimo xs
-                   then x
-                   else elMinimo xs 
+elMinimo (x:xs) = menorEntre x (elMinimo xs)
+
+menorEntre :: Ord a => a -> a -> a
+menorEntre a b = if a<b
+                 then a
+                 else b
 
 {-
         ------- [2,4,1,3] ------
