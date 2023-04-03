@@ -383,7 +383,7 @@ developersSeniors rs = rolesSenior (rolesDevelopers rs)
 
 rolesSenior :: [Rol] -> [Rol]
 rolesSenior []     = []
-rolesSenior (r:rs) = (singularSi r (esSenior r)) ++ (rolesSenior rs)
+rolesSenior (r:rs) = singularSi r (esSenior (seniorityDe r)) ++ rolesSenior rs
 
 rolesDevelopers :: [Rol] -> [Rol]
 rolesDevelopers []     = []
@@ -393,10 +393,13 @@ esDev :: Rol -> Bool
 esDev (Developer _ _) = True
 esDev _               = False
 
-esSenior :: Rol -> Bool
-esSenior (Developer Senior _)   = True
-esSenior (Management Senior _)  = True
-esSenior _                = False
+seniorityDe :: Rol -> Seniority
+seniorityDe (Developer s _)  = s
+seniorityDe (Management s _) = s
+
+esSenior :: Seniority -> Bool
+esSenior Senior = True
+esSenior _      = False
 
 proyectosTest = [proyecto1,proyecto2,proyecto4]
 rolesTest = [rol2,rol3,rol4,rol1]
