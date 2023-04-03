@@ -69,8 +69,9 @@ reversa (x:xs)  = reversa xs ++ [x]
 
 -- 14
 zipMaximos :: [Int] -> [Int] -> [Int]
-zipMaximos [] _          = []
-zipMaximos (x:xs) []     = []
+zipMaximos [] []         = []
+zipMaximos [] (x:xs)     = x:zipMaximos xs []
+zipMaximos (x:xs) []     = x:zipMaximos xs []
 zipMaximos (x:xs) (n:ns) = if (x > n) 
                             then (x:zipMaximos xs ns)
                             else (n:zipMaximos xs ns)
