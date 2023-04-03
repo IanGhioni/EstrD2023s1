@@ -202,8 +202,14 @@ cantPokemon (ConsEntrenador _ pokemones) = longitud pokemones
 
 cantPokemonDe :: TipoDePokemon -> Entrenador -> Int
 --Devuelve la cantidad de Pokémon de determinado tipo que posee el entrenador.
-cantPokemonDe t (ConsEntrenador n [] )     = 0     
-cantPokemonDe t (ConsEntrenador n (p :ps)) = (unoSiCeroSiNo (sonDelMismoTipo t (tipoDelPokemon p))) + cantPokemonDe t (ConsEntrenador n (ps))
+cantPokemonDe t e = cantPokemonDeTipo t (listaDePokemonsDe e)
+
+listaDePokemonsDe :: Entrenador -> [Pokemon]
+listaDePokemonsDe (ConsEntrenador _ ps) = ps
+
+cantPokemonDeTipo :: TipoDePokemon -> [Pokemon] -> Int
+cantPokemonDeTipo _ []     = 0
+cantPokemonDeTipo t (p:ps) = unoSiCeroSiNo (sonDelMismoTipo t (tipoDelPokemon p)) + cantPokemonDeTipo t ps
 
 unoSiCeroSiNo :: Bool -> Int
 unoSiCeroSiNo bool = if (bool)
