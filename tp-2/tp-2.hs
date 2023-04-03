@@ -36,9 +36,7 @@ pertenece e (x:xs)  = (e == x) || (pertenece e xs)
 --8
 apariciones :: Eq a => a -> [a] -> Int
 apariciones e []     = 0
-apariciones e (x:xs) = if (e == x) 
-                        then 1 + apariciones e xs
-                        else apariciones e xs
+apariciones e (x:xs) = unoSiCeroSiNo (e == x) + apariciones e xs
 
 --9
 losMenoresA :: Int -> [Int] -> [Int]
