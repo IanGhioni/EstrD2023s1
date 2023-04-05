@@ -363,7 +363,12 @@ empresaTest = (ConsEmpresa [rol2,rol3,rol4,rol1,rol1',rol1',rol1'])
 losDevSenior :: Empresa -> [Proyecto] -> Int
 --Dada una empresa indica la cantidad de desarrolladores senior que posee, que pertecen
 --además a los proyectos dados por parámetro.
-losDevSenior (ConsEmpresa rs) ps = longitud (rolesQueTrabajanEn (developersSeniors rs) ps)
+losDevSenior (ConsEmpresa rs) ps = cantDeDevSeniorasignadosA rs ps
+
+
+cantDeDevSeniorasignadosA :: [Rol] -> [Proyecto] -> Int
+cantDeDevSeniorasignadosA [] _      = 0
+cantDeDevSeniorasignadosA (r:rs) ps = unoSiCeroSiNo (esDev r && esSenior (seniorityDe r) && trabajaEnAlgunoDeEstosProyectos r ps) + cantDeDevSeniorasignadosA rs ps 
 
 rolesQueTrabajanEn :: [Rol] -> [Proyecto] -> [Rol]
 rolesQueTrabajanEn []      _   = []
