@@ -369,6 +369,10 @@ rolesQueTrabajanEn :: [Rol] -> [Proyecto] -> [Rol]
 rolesQueTrabajanEn []      _   = []
 rolesQueTrabajanEn (r:rs)  ps  = (singularSi r (trabajaEnAlgunoDeEstosProyectos r ps)) ++ (rolesQueTrabajanEn rs ps)
 
+singularSi :: a -> Bool -> [a]
+singularSi a True  = [a]
+singularSi a False = []
+
 trabajaEnAlgunoDeEstosProyectos :: Rol -> [Proyecto] -> Bool
 trabajaEnAlgunoDeEstosProyectos r []     = False
 trabajaEnAlgunoDeEstosProyectos r (p:ps) = (trabajaEnElProyecto r p) || (trabajaEnAlgunoDeEstosProyectos r ps)  
@@ -408,25 +412,22 @@ cantQueTrabajanEn :: [Proyecto] -> Empresa -> Int
 --Indica la cantidad de empleados que trabajan en alguno de los proyectos dados.
 cantQueTrabajanEn ps (ConsEmpresa rs) = longitud (rolesQueTrabajanEn rs ps)
 
+
+
 asignadosPorProyecto :: Empresa -> [(Proyecto, Int)]
 --Devuelve una lista de pares que representa a los proyectos (sin repetir) junto con su
 --cantidad de personas involucradas.
-asignadosPorProyecto e = zipDeProyectoYCantAsignados (proyectos e) (rolesDe e)
+asignadosPorProyecto e = contarPorProyecto (proyectosConRepetidos e)
 
+proyectosConRepetidos :: Empresa -> [Proyecto]
+proyectosConRepetidos (ConsEmpresa rs) = mapeoDeProyectos rs
 
-rolesDe :: Empresa -> [Rol]
-rolesDe (ConsEmpresa rs) =  rs 
+contarPorProyecto :: [Proyecto] -> [(Proyecto,Int)]
+contarPorProyecto []     = []
+contarPorProyecto (p:ps) = sumarOAgregarProyecto p (contarPorProyecto ps)
 
-zipDeProyectoYCantAsignados :: [Proyecto] -> [Rol] -> [(Proyecto,Int)]
-zipDeProyectoYCantAsignados [] _      = []
-zipDeProyectoYCantAsignados _ []      = error "La lista de roles no puede ser vacia"
-zipDeProyectoYCantAsignados (p:ps) rs = ((p,cantAsignadaAlProyecto p rs) : (zipDeProyectoYCantAsignados ps rs))
-
- 
-cantAsignadaAlProyecto :: Proyecto -> [Rol] -> Int
-cantAsignadaAlProyecto p []     = 0
-cantAsignadaAlProyecto p (r:rs) = unoSiCeroSiNo (trabajaEnElProyecto r p) + cantAsignadaAlProyecto p rs 
-
-singularSi :: a -> Bool -> [a]
-singularSi a True  = [a]
-singularSi a False = []
+sumarOAgregarProyecto :: Proyecto -> [(Proyecto,Int)] -> [(Proyecto,Int)]
+sumarOAgregarProyecto p []           =  [(p,1)]
+sumarOAgregarProyecto p1 ((p2,n):ts) =  if sonElMismoProyecto p1 p2
+                                        then (p2,n+1):ts
+                                        else (p2,n):sumarOAgregarProyecto p1 ts
