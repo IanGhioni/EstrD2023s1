@@ -436,3 +436,21 @@ sumarOAgregarProyecto p []           =  [(p,1)]
 sumarOAgregarProyecto p1 ((p2,n):ts) =  if sonElMismoProyecto p1 p2
                                         then (p2,n+1):ts
                                         else (p2,n):sumarOAgregarProyecto p1 ts
+
+
+-- Version prima de asignadosPorProyecto que utiliza fst y snd
+
+asignadosPorProyecto' :: Empresa -> [(Proyecto, Int)]
+--Devuelve una lista de pares que representa a los proyectos (sin repetir) junto con su
+--cantidad de personas involucradas.
+asignadosPorProyecto' e = contarPorProyecto' (proyectosConRepetidos e)
+
+contarPorProyecto' :: [Proyecto] -> [(Proyecto,Int)]
+contarPorProyecto' []     = []
+contarPorProyecto' (p:ps) = sumarOAgregarProyecto' p (contarPorProyecto ps)
+
+sumarOAgregarProyecto' :: Proyecto -> [(Proyecto,Int)] -> [(Proyecto,Int)]
+sumarOAgregarProyecto' p []           =  [(p,1)]
+sumarOAgregarProyecto' p1 (t:ts) =  if sonElMismoProyecto p1 (fst t)
+                                        then (fst t,snd t + 1):ts
+                                        else t:sumarOAgregarProyecto p1 ts
