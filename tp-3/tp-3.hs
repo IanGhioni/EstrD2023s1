@@ -174,7 +174,6 @@ heightT :: Tree a -> Int
 --Nota: la altura de un árbol (height en inglés), también llamada profundidad, es la cantidad
 --de niveles del árbol1. La altura para EmptyT es 0, y para una hoja es 1.
 heightT EmptyT                  = 0  
-heightT (NodeT _ EmptyT EmptyT) = 1
 heightT (NodeT _ t1 t2)         = 1 + retornarMayor (heightT t1) (heightT t2)
 
 retornarMayor :: Int -> Int -> Int
@@ -199,7 +198,12 @@ levelN n (NodeT a t1 t2) = (levelN (n-1) t1) ++ (levelN (n-1) t2)
 listPerLevel :: Tree a -> [[a]]
 --Dado un árbol devuelve una lista de listas en la que cada elemento representa un nivel de dicho árbol.
 listPerLevel EmptyT          = []
-listPerLevel (NodeT a t1 t2) = [a] : [aplanar (listPerLevel t1)] ++ [aplanar (listPerLevel t2)]     
+listPerLevel (NodeT a t1 t2) = [a] : funAux (listPerLevel t1) (listPerLevel t2)
+
+funAux :: [[a]] -> [[a]] -> [[a]]
+funAux [] ls         = ls
+funAux xs []         = xs
+funAux (x:xs) (l:ls) = (x ++ l) : funAux xs ls
 
 
 aplanar :: [[a]] -> [a]
@@ -256,7 +260,8 @@ arbolTestCaminos = NodeT 1 (
                                 NodeT 8 (
                                     NodeT 35 EmptyT EmptyT) EmptyT) 
                             EmptyT)) (
-                        NodeT 3 (NodeT 4 EmptyT EmptyT) (
+                        NodeT 3 (
+                            NodeT 4 EmptyT EmptyT) (
                             NodeT 5 (
                                 NodeT 20 EmptyT EmptyT) (
                                 NodeT 10 EmptyT EmptyT)))
