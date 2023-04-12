@@ -294,20 +294,23 @@ expTestSimple = Sum (Prod (Neg (Valor 3)) (Neg (Valor 3))) (Valor 3)
 --c) 1 * x = x * 1 = x
 --d) - (- x) = x
 simplificar :: ExpA -> ExpA
-simplificar (Neg (Neg n)) = (Valor (eval n))
-simplificar (Sum n1 n2)   = simplificarSum (Sum n1 n2)
-simplificar (Prod n1 n2)  = simplificarProd (Prod n1 n2)
+simplificar (Valor n)    = (Valor n)
+simplificar (Sum n1 n2)  = simplificarSuma (simplificar n1) (simplificar n2)
+simplificar (Prod n1 n2) = simplificarProd (simplificar n1) (simplificar n2)
+simplificar (Neg n)      = simplificarNeg (simplificar n)
 
-simplificarSum :: ExpA -> ExpA
-simplificarSum (Sum (Valor 0) n) = (Valor (eval n))
-simplificarSum (Sum n (Valor 0)) = (Valor (eval n))
-simplificarSum n                 = (Valor (eval n))
+simplificarNeg :: ExpA -> ExpA
+simplificarNeg (Neg n) = n
+simplificarNeg n       = n
 
-simplificarProd :: ExpA -> ExpA
-simplificarProd (Prod _ (Valor 0)) = (Valor 0)
-simplificarProd (Prod (Valor 0) _) = (Valor 0)
-simplificarProd (Prod (Valor 1) n) = (Valor (eval n))
-simplificarProd (Prod n (Valor 1)) = (Valor (eval n))
-simplificarProd n                  = (Valor (eval n)) 
+simplificarSuma :: ExpA -> ExpA -> ExpA
+simplificarSuma (Valor 0) n = n
+simplificarSuma n (Valor 0) = n
+simplificarSuma n1 n2       = (Sum n1 n2)
 
-expTestASimplificar = Sum (Prod (Neg (Neg (Valor 3))) (Valor 1)) (Valor 0)
+simplificarProd :: ExpA -> ExpA -> ExpA
+simplificarProd (Valor 0) n = (Valor 0)
+simplificarProd n (Valor 0) = (Valor 0)
+simplificarProd (Valor 1) n = n
+simplificarProd n (Valor 1) = n
+simplificarProd n1 n2       = (Prod n1 n2)
