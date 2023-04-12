@@ -104,7 +104,8 @@ alMenosNTesoros :: Int -> Camino -> Bool
 --Indica si hay al menos “n” tesoros en el camino.
 alMenosNTesoros _ Fin            = False
 alMenosNTesoros n (Nada c)       = alMenosNTesoros n c
-alMenosNTesoros n (Cofre objs c) = ((n - (cantidadDeTesoros objs)) <= 0) || alMenosNTesoros (n - (cantidadDeTesoros objs)) c
+alMenosNTesoros n (Cofre objs c) = let tesorosRestantes = n - (cantidadDeTesoros objs) 
+                                   in (tesorosRestantes <= 0) || alMenosNTesoros (tesorosRestantes) c
 
 
 cantidadDeTesoros :: [Objeto] -> Int
