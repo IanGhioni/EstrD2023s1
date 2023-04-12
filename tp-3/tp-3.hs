@@ -88,7 +88,12 @@ pasosHastaTesoro (Cofre objs c) = if (tieneUnTesoro objs)
 hayTesoroEn :: Int -> Camino -> Bool
 --Indica si hay un tesoro en una cierta cantidad exacta de pasos. Por ejemplo, si el número de
 --pasos es 5, indica si hay un tesoro en 5 pasos.
-hayTesoroEn n c = (hayTesoro c) && ((pasosHastaFin c) > n) && ((pasosHastaTesoro c) == n)
+hayTesoroEn 0 (Cofre objs c) = tieneUnTesoro objs
+hayTesoroEn 0 _              = False
+hayTesoroEn n Fin            = False 
+hayTesoroEn n (Nada c)       = hayTesoroEn (n-1) c
+hayTesoroEn n (Cofre _ c)    = hayTesoroEn (n-1) c
+
 
 pasosHastaFin :: Camino -> Int
 pasosHastaFin Fin         = 0
