@@ -55,10 +55,10 @@ data Objeto = Cacharro | Tesoro
 data Camino = Fin | Cofre [Objeto] Camino | Nada Camino
     deriving Show
 
-conTesoro = [Cacharro,Tesoro,Tesoro]
+conTesoro = [Tesoro,Tesoro,Tesoro]
 sinTesoro = [Cacharro]
 
-caminoConTesoro = (Nada (Cofre [Cacharro,Tesoro,Tesoro] (Nada Fin)))
+caminoConTesoro = Nada (Nada (Cofre conTesoro (Cofre [Cacharro,Tesoro,Tesoro] (Nada Fin))))
 caminoSinTesoro = (Nada (Cofre sinTesoro (Nada Fin)))
 
 hayTesoro :: Camino -> Bool
@@ -118,12 +118,12 @@ cantTesorosEntre :: Int -> Int -> Camino -> Int
 --el rango es 3 y 5, indica la cantidad de tesoros que hay entre hacer 3 pasos y hacer 5. Están
 --incluidos tanto 3 como 5 en el resultado.
 cantTesorosEntre _ _ Fin              = 0
-cantTesorosEntre n1 n2 (Nada c)       = if n1==0 
-                                        then cantidadDeTesorosHasta (n2-1) c 
-                                        else cantTesorosEntre (n1-1) (n2-1) c
-cantTesorosEntre n1 n2 (Cofre objs c) = if n1==0 
-                                        then cantidadDeTesorosHasta (n2) (Cofre objs c)
-                                        else cantTesorosEntre (n1-1) (n2-1) c
+cantTesorosEntre _ 0 (Nada c)         = 0
+cantTesorosEntre _ 0 (Cofre objs c)   = cantidadDeTesoros objs
+cantTesorosEntre 0 n (Nada c)         = cantTesorosEntre 0 (n-1) c
+cantTesorosEntre 0 n (Cofre objs c)   = cantidadDeTesoros objs + cantTesorosEntre 0 (n-1) c   
+cantTesorosEntre n1 n2 (Nada c)       = cantTesorosEntre (n1-1) (n2-1) c
+cantTesorosEntre n1 n2 (Cofre objs c) = cantTesorosEntre (n1-1) (n2-1) c
 
 cantidadDeTesorosHasta :: Int -> Camino -> Int
 cantidadDeTesorosHasta _ Fin            = 0  
