@@ -187,13 +187,30 @@ mapaConMuchosTesoro = (Bifurcacion cofreConTesoro
                             (Fin cofreConTesoro)))
 
 
---todosLosCaminos :: Mapa -> [[Dir]]
+todosLosCaminos :: Mapa -> [[Dir]]
 --Devuelve todos lo caminos en el mapa.
+todosLosCaminos (Fin _)               = [[]]
+todosLosCaminos (Bifurcacion _ m1 m2) = agregarACadaLista Izq (todosLosCaminos m1) ++ agregarACadaLista Der (todosLosCaminos m2)  
 
+
+mapaTestTodosLosCaminos = Bifurcacion cofreVacio 
+                            (Bifurcacion cofreVacio
+                                (Bifurcacion cofreVacio 
+                                    (Fin cofreVacio) 
+                                    (Fin cofreVacio))
+                                (Bifurcacion cofreVacio 
+                                    (Fin cofreVacio) 
+                                    (Fin cofreVacio)))
+                             (Fin cofreVacio)
+
+
+agregarACadaLista :: a -> [[a]] -> [[a]]
+agregarACadaLista a []     = []
+agregarACadaLista a (l:ls) = [[a] ++ l] ++ agregarACadaLista a ls
 
 caminoDeLaRamaMasLarga :: Mapa -> [Dir]
 --Indica el camino de la rama más larga.
-caminoDeLaRamaMasLarga (Fin c)               = []
+caminoDeLaRamaMasLarga (Fin _)               = []
 caminoDeLaRamaMasLarga (Bifurcacion _ m1 m2) = direccionDeLaRamaMasLarga m1 m2 : caminoDeLaRamaMasLarga (mapaMasLargoEntre m1 m2)
 
 mapaMasLargoEntre :: Mapa -> Mapa -> Mapa
