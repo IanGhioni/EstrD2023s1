@@ -228,10 +228,8 @@ ramaMasLargaEntre t1 t2 = if ((heightT t1) > (heightT t2))
 
 todosLosCaminos :: Tree a -> [[a]]
 --Dado un árbol devuelve todos los caminos, es decir, los caminos desde la raiz hasta las hojas.
-
 todosLosCaminos EmptyT          = []
-todosLosCaminos (NodeT a EmptyT EmptyT) = [[a]]
-todosLosCaminos (NodeT a t1 t2) = (agregarACadaLista a (todosLosCaminos t1)) ++ (agregarACadaLista a (todosLosCaminos t2))
+todosLosCaminos (NodeT a t1 t2) = [a] : (agregarACadaLista a (todosLosCaminos t1)) ++ (agregarACadaLista a (todosLosCaminos t2))
 
 agregarACadaLista :: a -> [[a]] -> [[a]]
 agregarACadaLista a []     = []
