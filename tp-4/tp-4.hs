@@ -190,7 +190,7 @@ mapaConMuchosTesoro = (Bifurcacion cofreConTesoro
 todosLosCaminos :: Mapa -> [[Dir]]
 --Devuelve todos lo caminos en el mapa.
 todosLosCaminos (Fin _)               = [[]]
-todosLosCaminos (Bifurcacion _ m1 m2) = agregarACadaLista Izq (todosLosCaminos m1) ++ agregarACadaLista Der (todosLosCaminos m2)  
+todosLosCaminos (Bifurcacion _ m1 m2) = [[Izq]] ++ [[Der]] ++ agregarACadaLista Izq (todosLosCaminos m1) ++ agregarACadaLista Der (todosLosCaminos m2)  
 
 
 mapaTestTodosLosCaminos = Bifurcacion cofreVacio 
@@ -232,3 +232,202 @@ retornarMayor :: Int -> Int -> Int
 retornarMayor n1 n2 = if n1>n2
                        then n1
                        else n2
+
+
+
+
+
+
+
+
+data Componente = LanzaTorpedos | Motor Int | Almacen [Barril]
+    deriving Show
+
+data Barril = Comida | Oxigeno | Torpedo | Combustible
+    deriving Show
+
+data Sector = S SectorId [Componente] [Tripulante]
+    deriving Show
+
+type SectorId = String
+
+type Tripulante = String
+
+data Tree a = EmptyT | NodeT a (Tree a) (Tree a)
+    deriving Show
+
+data Nave = N (Tree Sector)
+    deriving Show
+
+
+almacen = Almacen [Torpedo, Combustible, Oxigeno, Comida] 
+
+
+
+
+
+
+
+-- Implementar las siguientes funciones utilizando recursión estructural:
+sectores :: Nave -> [SectorId]
+-- Propósito: Devuelve to dos los sectores de la nave.
+sectores (N t) = idSectoresDe t
+
+idSectoresDe :: Tree Sector -> [SectorId]
+idSectoresDe EmptyT          = []
+idSectoresDe (NodeT s ti td) = idSectorDe s : idSectoresDe ti ++ idSectoresDe td
+
+idSectorDe :: Sector -> SectorId
+idSectorDe (S id _ _) = id
+
+
+
+
+
+
+
+
+
+
+
+poderDePropulsion :: Nave -> Int
+-- Propósito: Devuelve la suma de poder de propulsión de to dos los motores de la nave. 
+-- Nota: el poder de propulsión es el número que acompaña al constructor de motores.
+poderDePropulsion (N t) = poderDePropulsionDeArbol t
+
+poderDePropulsionDeArbol :: Tree Sector -> Int
+poderDePropulsionDeArbol EmptyT          = 0  
+poderDePropulsionDeArbol (NodeT s ti td) = poderDePropulsionDelSector s 
+                                         + poderDePropulsionDeArbol ti
+                                         + poderDePropulsionDeArbol td
+
+poderDePropulsionDelSector :: Sector -> Int
+poderDePropulsionDelSector (S _ cs _) = poderDePropulsionDeMotores cs
+
+poderDePropulsionDeMotores :: [Componente] -> Int
+poderDePropulsionDeMotores []     = 0  
+poderDePropulsionDeMotores (c:cs) = propulsionDelMotor c + poderDePropulsionDeMotores cs
+
+propulsionDelMotor :: Componente -> Int
+propulsionDelMotor (Motor n) = n
+propulsionDelMotor _         = 0
+
+
+
+
+
+
+
+
+
+barriles :: Nave -> [Barril]
+-- Propósito: Devuelve todos los barriles de la nave.
+barriles (N t) = barrilesDelArbol t
+
+barrilesDelArbol :: Tree Sector -> [Barril]
+barrilesDelArbol EmptyT          = []
+barrilesDelArbol (NodeT s ti td) = barrilesDelSector s ++ barrilesDelArbol ti ++ barrilesDelArbol td
+
+barrilesDelSector :: Sector -> [Barril]
+barrilesDelSector (S _ cs _) = filtrarBarrilesDe cs
+
+filtrarBarrilesDe :: [Componente] -> [Barril]
+filtrarBarrilesDe []     = []
+filtrarBarrilesDe (c:cs) = barrilDe c ++ filtrarBarrilesDe cs
+
+barrilDe :: Componente -> [Barril]
+barrilDe (Almacen b) = b
+barrilDe _           = []
+
+
+
+
+
+
+
+agregarASector :: [Componente] -> SectorId -> Nave -> Nave
+-- Propósito: Añade una lista de componentes a un sector de la nave.
+-- Nota: ese sector puede no existir, en cuyo caso no añade componentes.
+agregarASector cs id (N t) = N (agregarASectorDeArbol cs id t)
+
+agregarASectorDeArbol :: [Componente] -> SectorId -> Tree Sector -> Tree Sector
+agregarASectorDeArbol _ _ EmptyT = EmptyT
+agregarASectorDeArbol cs id (NodeT s ti td) = if id == idSectorDe s
+                                              then NodeT (agregarComponentes cs s) ti td
+                                              else NodeT s (agregarASectorDeArbol cs id ti) (agregarASectorDeArbol cs id td)
+
+agregarComponentes :: [Componente] -> Sector -> Sector
+agregarComponentes cs1 (S i cs2 ts) = S i (cs2 ++ cs1) ts
+
+
+
+
+
+asignarTripulanteA :: Tripulante -> [SectorId] -> Nave -> Nave
+-- Propósito: Incorp ora un tripulante a una lista de sectores de la nave.
+-- Precondición: Todos los id de la lista existen en la nave.
+asignarTripulanteA t ids (N tr) = N (asignarTripulanteArbol t ids tr)
+
+asignarTripulanteArbol :: Tripulante -> [SectorId] -> Tree Sector -> Tree Sector
+asignarTripulanteArbol _ _ EmptyT            = EmptyT
+asignarTripulanteArbol t ids (NodeT s ti td) = if  pertenece (idSectorDe s) ids
+                                                    then NodeT (aniadirTripulanteA t s) 
+                                                                    (asignarTripulanteArbol t ids ti )
+                                                                    (asignarTripulanteArbol t ids td)
+                                                    else NodeT s (asignarTripulanteArbol t ids ti) (asignarTripulanteArbol t ids td)
+
+pertenece :: Eq a => a -> [a] -> Bool
+pertenece e []      = False
+pertenece e (x:xs)  = (e == x) || (pertenece e xs)
+
+aniadirTripulanteA :: Tripulante -> Sector -> Sector
+aniadirTripulanteA t (S id cs ts) = S id cs (t : ts) 
+
+sectoresAsignados :: Tripulante -> Nave -> [SectorId]
+-- Propósito: Devuelve los sectores en donde aparece un tripulante dado.
+sectoresAsignados t (N tr) = sectoresAsignadosDeArbol t tr
+
+sectoresAsignadosDeArbol :: Tripulante -> Tree Sector -> [SectorId]
+sectoresAsignadosDeArbol t EmptyT          = []
+sectoresAsignadosDeArbol t (NodeT s ti td) = if pertenece t (tripulantesDeSector s)
+                                             then idSectorDe s : (sectoresAsignadosDeArbol t ti ++ sectoresAsignadosDeArbol t td)       
+                                             else sectoresAsignadosDeArbol t ti ++ sectoresAsignadosDeArbol t td
+
+
+
+
+tripulantes :: Nave -> [Tripulante]
+-- Propósito: Devuelve la lista de tripulantes, sin elementos repetidos.
+tripulantes (N t) = tripulantesDeArbol t
+
+tripulantesDeArbol :: Tree Sector -> [Tripulante]
+tripulantesDeArbol EmptyT          = []
+tripulantesDeArbol (NodeT s ti td) = agregarSinRepetir (tripulantesDeSector s) (agregarSinRepetir (tripulantesDeArbol ti)  (tripulantesDeArbol td))
+
+tripulantesDeSector :: Sector -> [Tripulante]
+tripulantesDeSector (S _ _ ts) = ts
+
+agregarSinRepetir :: Eq a => [a] -> [a] -> [a]
+agregarSinRepetir []     ys = ys 
+agregarSinRepetir (x:xs) ys = if pertenece x ys
+                              then agregarSinRepetir xs ys
+                              else x : agregarSinRepetir xs ys 
+
+
+
+
+arbolSectores = (NodeT sector1 
+                    (NodeT sector2 
+                        (NodeT sector3 EmptyT EmptyT) 
+                        (NodeT sector4 EmptyT EmptyT))
+                    (NodeT sector5 
+                        (NodeT sector6 EmptyT EmptyT) 
+                        (NodeT sector7 EmptyT EmptyT)))
+
+sector1 = (S "1" [Motor 10,almacen] ["Nacho"])
+sector2 = (S "2" [] ["Nacho", "Nando"])
+sector3 = (S "3" [Motor 100,almacen] ["Juli", "Mati"])
+sector4 = (S "4" [Motor 50,LanzaTorpedos] ["Ian", "Nando"])
+sector5 = (S "5" [Motor 10] ["Pepe", "Ian"])
+sector6 = (S "6" [Motor 20] ["Pepe", "Nacho"])
+sector7 = (S "7" [] ["Ian", "Lalo"])
