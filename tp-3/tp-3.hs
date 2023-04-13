@@ -302,7 +302,7 @@ simplificar (Neg n)      = simplificarNeg (simplificar n)
 
 simplificarNeg :: ExpA -> ExpA
 simplificarNeg (Neg n) = n
-simplificarNeg n       = n
+simplificarNeg n       = Neg n
 
 simplificarSuma :: ExpA -> ExpA -> ExpA
 simplificarSuma (Valor 0) n = n
