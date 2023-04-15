@@ -1,3 +1,4 @@
+
 data Pizza = Prepizza | Capa Ingrediente Pizza
     deriving Show
 
@@ -431,3 +432,295 @@ sector4 = (S "4" [Motor 50,LanzaTorpedos] ["Ian", "Nando"])
 sector5 = (S "5" [Motor 10] ["Pepe", "Ian"])
 sector6 = (S "6" [Motor 20] ["Pepe", "Nacho"])
 sector7 = (S "7" [] ["Ian", "Lalo"])
+
+
+
+
+
+
+
+
+
+type Presa = String -- nombre de presa
+
+type Territorio = String -- nombre de territorio
+
+type Nombre = String -- nombre de lobo
+
+data Lobo = Cazador Nombre [Presa] Lobo Lobo Lobo | Explorador Nombre [Territorio] Lobo Lobo | Cria Nombre
+    deriving Show
+    
+data Manada = M Lobo
+    deriving Show
+
+
+
+
+-- Construir un valor de tipo Manada que posea 1 cazador, 2 exploradores y que el resto sean
+--crías. Resolver las siguientes funciones utilizando recursión estructural sobre la estructura
+--que corresponda en cada caso:
+
+cria1 = Cria "Cria 1"
+cria2 = Cria "Cria 2"
+cria3 = Cria "Cria 3"
+cria4 = Cria "Cria 4"
+cria5 = Cria "Cria 5"
+
+
+explorador1 = Explorador "Explorador 1" ["Playa"] cria1 cria2
+explorador2 = Explorador "Explorador 2" ["Lago"] cria3 cria4 
+
+cazador1 = Cazador "Cazador 1" [] explorador1 explorador2 cria5 
+
+manada = M cazador1
+
+buenaCaza :: Manada -> Bool
+--Propósito: dada una manada, indica si la cantidad de alimento cazado es mayor a la cantidad de crías.
+buenaCaza (M l) = let nroDePresasYCrias = totalDePresasYCrias l
+                  in fst  nroDePresasYCrias > snd nroDePresasYCrias
+
+totalDePresasYCrias :: Lobo -> (Int,Int)
+totalDePresasYCrias (Cria n)                = (0,1)
+totalDePresasYCrias (Explorador n ts l1 l2) = let tuplaDePresasYCriasTotal = sumarTuplas (totalDePresasYCrias l1) (totalDePresasYCrias l2)
+                                            in sumarTuplas (0,0) tuplaDePresasYCriasTotal       
+totalDePresasYCrias (Cazador n ps l1 l2 l3) = let tuplaDePresasYCriasTotal = sumarTuplas (totalDePresasYCrias l1) (sumarTuplas (totalDePresasYCrias l2) (totalDePresasYCrias l3))
+                                            in sumarTuplas (long ps,0) tuplaDePresasYCriasTotal
+
+sumarTuplas :: (Int,Int) -> (Int,Int) -> (Int,Int)
+sumarTuplas (x1,x2) (y1,y2) = (x1 + y1,x2 + y2)
+
+
+
+
+elAlfa :: Manada -> (Nombre, Int)
+--Propósito: dada una manada, devuelve el nombre del lobo con más presas cazadas, junto
+--con su cantidad de presas. Nota: se considera que los exploradores y crías tienen cero presas
+--cazadas, y que podrían formar parte del resultado si es que no existen cazadores con más de
+--cero presas.
+elAlfa (M l) = let loboAlfa = (elAlfaDeLobo l)
+                in (nombreDe loboAlfa, cantPresas loboAlfa)
+
+elAlfaDeLobo :: Lobo -> Lobo
+elAlfaDeLobo (Cria n)                = Cria n
+elAlfaDeLobo (Explorador n ts l1 l2) = elQueMasCazo [(Explorador n ts l1 l2), elAlfaDeLobo l1 , elAlfaDeLobo l2]  
+elAlfaDeLobo (Cazador n ps l1 l2 l3) = elQueMasCazo [(Cazador n ps l1 l2 l3), elAlfaDeLobo l1 , elAlfaDeLobo l2, elAlfaDeLobo l3]
+
+elQueMasCazo :: [Lobo] -> Lobo
+elQueMasCazo []     = error "Tiene que haber lobos"
+elQueMasCazo [l]    = l 
+elQueMasCazo (l:ls) =   let loboQueMasCazo = elQueMasCazo ls
+                        in if cazoMas l loboQueMasCazo
+                        then l
+                        else loboQueMasCazo
+
+cazoMas :: Lobo -> Lobo -> Bool
+cazoMas (Cazador _ ps1 _ _ _) (Cazador _ ps2 _ _ _) = long ps1 > long ps2
+cazoMas l1 _                                        = esCazador l1 
+
+nombreDe :: Lobo -> Nombre
+nombreDe (Cria n)             = n
+nombreDe (Explorador n _ _ _) = n
+nombreDe (Cazador n _ _ _ _)  = n
+
+cantPresas :: Lobo -> Int
+cantPresas (Cazador _ ps _ _ _) = long ps
+cantPresas _                    = 0
+
+esCazador :: Lobo -> Bool
+esCazador (Cazador _ _ _ _ _) = True
+esCazador _                   = False
+
+
+long :: [a] -> Int
+long []     = 0
+long (x:xs) = 1 + long xs
+
+
+
+
+losQueExploraron :: Territorio -> Manada -> [Nombre]
+--Propósito: dado un territorio y una manada, devuelve los nombres de los exploradores que
+--pasaron por dicho territorio.
+losQueExploraron t (M l) = nombresDeQuienesExploraron t l
+
+
+
+nombresDeQuienesExploraron :: Territorio -> Lobo -> [Nombre]
+nombresDeQuienesExploraron t (Cria n)                = [] 
+nombresDeQuienesExploraron t (Explorador n ts l1 l2) = let nombresDeExploradores = nombresDeQuienesExploraron t l1 ++ nombresDeQuienesExploraron t l2 in
+                                                       if pertenece t ts 
+                                                       then (n:nombresDeExploradores)
+                                                       else  nombresDeExploradores
+nombresDeQuienesExploraron t (Cazador _ _ l1 l2 l3) = nombresDeQuienesExploraron t l1 ++ nombresDeQuienesExploraron t l2 ++ nombresDeQuienesExploraron t l3
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+exploradoresPorTerritorio :: Manada -> [(Territorio, [Nombre])]
+--Propósito: dada una manada, denota la lista de los pares cuyo primer elemento es un terri-
+--torio y cuyo segundo elemento es la lista de los nombres de los exploradores que exploraron
+--dicho territorio. Los territorios no deben repetirse.
+exploradoresPorTerritorio (M l) = territorioYNombresDeExploradores l
+
+
+
+territorioYNombresDeExploradores :: Lobo -> [(Territorio, [Nombre])]
+-- Proposito: Dado un lobo, denota la lista de los pares cuyo primer elemento es un terri-
+--torio y cuyo segundo elemento es la lista de los nombres de los exploradores que exploraron
+--dicho territorio. Los territorios no deben repetirse.
+territorioYNombresDeExploradores (Cria n)                = []
+territorioYNombresDeExploradores (Explorador n ts l1 l2) = juntarTerritoriosRepetidos (hacerTuplasDeTerritorioYNombre n ts) ((territorioYNombresDeExploradores l1) ++ (territorioYNombresDeExploradores l2))
+territorioYNombresDeExploradores (Cazador n ps l1 l2 l3) = juntarTerritoriosRepetidos (territorioYNombresDeExploradores l1) ((territorioYNombresDeExploradores l2) ++ (territorioYNombresDeExploradores l3))
+
+
+juntarTerritoriosRepetidos :: [(Territorio, [Nombre])] -> [(Territorio, [Nombre])] -> [(Territorio, [Nombre])]
+-- Proposito: dada 2 listas de pares cuyo primer elemento es un territorio y su segundo elemento la lista de 
+-- nombres que lo recorrieron, denota una lista donde los pares de territorios repetidas se juntan en un mismo 
+-- par, juntando la lista de nombres
+-- PRECONDICION: No pueden haber pares con territorios repetidos en la primera lista dada  
+juntarTerritoriosRepetidos [] tps                = tps
+juntarTerritoriosRepetidos (tp1:tps1) tps2       = (juntarTuplaConRepetidos tp1 tps2) : tuplasSinTerritorio (fst tp1) (juntarTerritoriosRepetidos tps1 tps2)
+
+
+
+tuplasSinTerritorio :: Territorio ->  [(Territorio, [Nombre])] -> [(Territorio, [Nombre])]
+-- Dado un territorio y una lista de pares cuyo primer elemento es un territorio y su segundo elemento la lista de 
+-- nombres que lo recorrieron, denota una lista sin los pares que tengan al territorio dado como primer elemento
+tuplasSinTerritorio _ []       = []
+tuplasSinTerritorio t (tp:tps) = if t == fst tp
+                                 then tuplasSinTerritorio t tps
+                                 else tp : tuplasSinTerritorio t tps
+
+juntarTuplaConRepetidos :: (Territorio, [Nombre]) -> [(Territorio, [Nombre])] -> (Territorio, [Nombre])
+-- Proposito: Dado un par y una lista de pares cuyo primer elemento es un territorio y su segundo elemento la lista de 
+-- nombres que lo recorrieron, devuelve un par con el mismo territorio de la tupla dado y la lista de nombres del par dado 
+-- junto con los demas nombres de la lista de tuplas dada que tengan el mismo territorio.
+juntarTuplaConRepetidos tp []           = tp 
+juntarTuplaConRepetidos (t,ns) (tp:tps) = if t == fst tp
+                                          then juntarTuplaConRepetidos (t,ns ++ snd tp) tps
+                                          else juntarTuplaConRepetidos (t,ns) tps
+
+
+hacerTuplasDeTerritorioYNombre :: Nombre -> [Territorio] -> [(Territorio, [Nombre])]
+-- Proposito: Dado un nombre y una lista de territorios, devuelve una lista de pares donde el primer elemento
+-- es un territorio y el segundo es una lista con el nombre dado
+hacerTuplasDeTerritorioYNombre n []     = []
+hacerTuplasDeTerritorioYNombre n (t:ts) = (t,[n]) : hacerTuplasDeTerritorioYNombre n ts
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+superioresDelCazador :: Nombre -> Manada -> [Nombre]
+--Propósito: dado un nombre de cazador y una manada, indica el nombre de todos los
+--cazadores que tienen como subordinado al cazador dado (directa o indirectamente).
+--Precondición: hay un cazador con dicho nombre y es único.
+superioresDelCazador n (M l) = nombreDeLosCazadores (todosLosSuperiores n l)
+
+nombreDeLosCazadores :: [Lobo] -> [Nombre]
+nombreDeLosCazadores []     = []
+nombreDeLosCazadores (l:ls) = if esCazador l
+                              then nombreDe l : nombreDeLosCazadores ls
+                              else nombreDeLosCazadores ls  
+
+todosLosSuperiores :: Nombre -> Lobo -> [Lobo]
+todosLosSuperiores n1 (Cria n2)                = []
+todosLosSuperiores n1 (Explorador n2 ts l1 l2) = let descDeHijes = todosLosSuperiores n1 l1 ++ todosLosSuperiores n1 l2
+                                                 in if nombreDe l1 == n1 || nombreDe l2 == n1
+                                                    then [Explorador n2 ts l1 l2]
+                                                    else if noEstaVacia descDeHijes
+                                                         then (Explorador n2 ts l1 l2):descDeHijes
+                                                         else []
+todosLosSuperiores n1 (Cazador n2 ps l1 l2 l3) = let descDeHijes = todosLosSuperiores n1 l1 ++ todosLosSuperiores n1 l2  ++ todosLosSuperiores n1 l3
+                                                 in if nombreDe l1 == n1 || nombreDe l2 == n1 ||nombreDe l3 == n1
+                                                    then [Cazador n2 ps l1 l2 l3]
+                                                    else if noEstaVacia descDeHijes
+                                                         then (Cazador n2 ps l1 l2 l3):descDeHijes
+                                                         else []
+
+
+noEstaVacia :: [a] -> Bool
+noEstaVacia (x:xs) = True
+noEstaVacia _      = False 
+
+
+
+--let nombre = expression in
+--    codigo
+
+
+
+
+
+
+
+
+
+
+cria6 = Cria "Cria 6"
+cria7 = Cria "Cria 7"
+cria8 = Cria "Cria 8"
+cria9 = Cria "Cria 9"
+cria10 = Cria "Cria 10"
+
+cazador1' = Cazador "Cazador 1'" ["P2"] cazador3 explorador1 cazador2
+cazador2 = Cazador "Cazador 2" ["P1"] explorador2 cazador4 cria9 
+cazador3 = Cazador "Cazador 3" muchasPresas cazador5 explorador3 cria8 
+cazador4 = Cazador "Cazador 4" muchasPresas explorador5 cria1 cria6 
+cazador5 = Cazador "Cazador 5" ["P3"] cria10 cazadorS cria7 
+cazadorS = Cazador "Subordinado" muchasPresas cria10 cria9 cria6
+
+
+explorador3 = Explorador "Ex3" ["Miami","Bosque","Playa"] cria10 explorador4
+explorador4 = Explorador "Ex4" ["Miami"] cria5 cria3
+explorador5 = Explorador "Ex5" ["Miami","Bosque"] cria4 cria5
+
+-- 18 crias
+muchasPresas = ["Px","Px","Px","Px","Px","Px","Px"]
