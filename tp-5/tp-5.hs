@@ -1,7 +1,7 @@
 --import Set
 import SetV2
--- import Queue
-import QueueV2
+import Queue
+-- import QueueV2
 import Stack
 
 -- Especificar el costo operacional de las siguientes funciones:
