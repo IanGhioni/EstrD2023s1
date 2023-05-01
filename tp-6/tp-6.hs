@@ -121,3 +121,33 @@ mapTest = assocM "p" 5 (assocM "j" 4 (assocM "3" 1 (emptyM)))
 mapTest2 :: Map [Char]  Int
 mapTest2 = assocM "Z" 70 (assocM "E" 84 (assocM "3" 19 (emptyM)))
 
+
+
+indexar :: [a] -> Map Int a
+--Propósito: dada una lista de elementos construye un map que relaciona cada elemento con
+--su posición en la lista.
+indexar ls = indexarConMapDesde 0 ls emptyM
+
+indexarConMapDesde :: Int -> [a] -> Map Int a -> Map Int a
+indexarConMapDesde n [] m     = m
+indexarConMapDesde n (x:xs) m = indexarConMapDesde (n+1) xs (assocM n x m)
+
+ocurrencias :: String -> Map Char Int
+--Propósito: dado un string, devuelve un map donde las claves son los caracteres que aparecen
+--en el string, y los valores la cantidad de veces que aparecen en el mismo.
+ocurrencias str = asociarCadaTupla (tuplasDeCharYOcurrencias str) emptyM
+
+tuplasDeCharYOcurrencias :: String -> [(Char,Int)]
+tuplasDeCharYOcurrencias []     = []
+tuplasDeCharYOcurrencias (x:xs) = sumarOAgregar x (tuplasDeCharYOcurrencias xs)
+
+sumarOAgregar :: Eq a => a -> [(a,Int)] -> [(a,Int)]
+sumarOAgregar a []     = [(a,1)] 
+sumarOAgregar a (x:xs) = if (a == fst x)
+                         then (a,snd x + 1):xs
+                         else x : sumarOAgregar a xs
+
+
+pertenece :: Eq a => a -> [a] -> Bool
+pertenece n [] = False
+pertenece n (x:xs) = n == x || pertenece n xs
