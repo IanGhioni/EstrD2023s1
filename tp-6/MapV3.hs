@@ -12,7 +12,17 @@ emptyM = M [] []
 
 assocM :: Eq k => k -> v -> Map k v -> Map k v
 -- Propósito: agrega una asociación clave-valor al map.
-assocM k v (M ks vs) = M (k:ks) (v:vs) 
+assocM k v (M ks vs) =  let (xs,ys) = funAuc x y xs ys in
+                        (M xs ys) 
+
+funAux :: Eq k => k -> v -> [k] -> [v] -> ([k],[v])
+funAux  x y  []       _    =
+funAux x y (x':xs) (y':ys) = let (xs',ys') = funAux x y xs ys in
+                              if x == x'
+                              then (xs,y:ys)
+                              else (x':xs',y':ys')
+                              
+
 
 lookupM :: Eq k => k -> Map k v -> Maybe v
 -- Propósito: encuentra un valor dado una clave.
