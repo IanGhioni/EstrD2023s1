@@ -7,7 +7,7 @@ heapSort xs = returnListOfPQ (listToPQ xs)
 
 listToPQ :: Ord a => [a] -> PriorityQueue a
 listToPQ []     = emptyPQ
-listToPQ (x:xs) = insertPQ x (addListToPQ xs)
+listToPQ (x:xs) = insertPQ x (listToPQ xs)
 
 returnListOfPQ :: Ord a => PriorityQueue a -> [a]
 returnListOfPQ pq =  if isEmptyPQ pq
