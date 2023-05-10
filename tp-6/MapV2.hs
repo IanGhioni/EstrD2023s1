@@ -36,7 +36,7 @@ deleteAssoc k (x:xs) = if fst x == k
 
 keys :: Eq k => Map k v -> [k]
 -- Propósito: devuelve las claves del map.
-keys (M ls) = sinRepetidos (fstList ls)
+keys (M ls) = fstList ls
 
 fstList :: [(a,b)] -> [a]
 fstList []     = []
