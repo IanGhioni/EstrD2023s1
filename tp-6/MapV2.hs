@@ -31,7 +31,7 @@ deleteM k (M ls) = M (deleteAssoc k ls)
 deleteAssoc :: Eq k => k -> [(k,v)] -> [(k,v)]
 deleteAssoc k []     = []
 deleteAssoc k (x:xs) = if fst x == k
-                       then xs
+                       then deleteAssoc k xs
                        else x: deleteAssoc k xs
 
 keys :: Eq k => Map k v -> [k]

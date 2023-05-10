@@ -2,12 +2,12 @@ import PriorityQueue
 import MapV2
 
 heapSort :: Ord a => [a] -> [a]
-heapSort xs = returnListOfPQ (addListToPQ xs emptyPQ)
+heapSort xs = returnListOfPQ (listToPQ xs)
 
 
-addListToPQ :: Ord a => [a] -> PriorityQueue a -> PriorityQueue a
-addListToPQ [] pq     = pq
-addListToPQ (x:xs) pq = addListToPQ xs (insertPQ x pq)
+listToPQ :: Ord a => [a] -> PriorityQueue a
+listToPQ []     = emptyPQ
+listToPQ (x:xs) = insertPQ x (listToPQ xs)
 
 returnListOfPQ :: Ord a => PriorityQueue a -> [a]
 returnListOfPQ pq =  if isEmptyPQ pq
