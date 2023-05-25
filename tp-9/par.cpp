@@ -22,6 +22,7 @@ int snd(Par p) {
     return p.y;
 }
 
+// Propósito: devuelve la mayor componente
 int maxDelPar(Par p) {
     if (p.x > p.y) {
         return(p.x);
@@ -29,10 +30,13 @@ int maxDelPar(Par p) {
     else { return(p.y); };
 }
 
+// Propósito: devuelve un par con las componentes intercambiadas
 Par swap(Par p) {
     return(consPar(p.y,p.x));
 }
 
+// Propósito: devuelve un par donde la primer componente
+// es la división y la segunda el resto entre ambos números
 Par divisionYResto(int n, int m) {
     return(consPar( n/m , n%m ));
 }
