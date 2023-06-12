@@ -11,6 +11,8 @@ int head(LinkedList xs);
 void tail(LinkedList xs);
 void snoc(int x, LinkedList xs);
 void cons(int x, LinkedList xs);
+void append(LinkedList xs, LinkedList ys);
+
 
 ListIterator getIterator(LinkedList xs);
 int current(ListIterator it);

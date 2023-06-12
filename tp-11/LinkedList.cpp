@@ -8,6 +8,7 @@ struct NodeL {
 struct LinkedListSt {
     int cantidad;
     NodeL* first;
+    NodeL* last;
 };
 
 struct IteradorSt {
@@ -17,6 +18,7 @@ struct IteradorSt {
 LinkedList nil() {
     LinkedListSt* xs = new LinkedListSt;
     xs->first = nullptr;
+    xs->last = nullptr;
     xs->cantidad = 0;
     return(xs);
 }
@@ -35,7 +37,10 @@ int head(LinkedList xs) {
 
 void tail(LinkedList xs) {
     NodeL* temp = xs->first;
-    xs->first = temp->next;
+    if (temp->next != nullptr) {
+        xs->first = temp->next;
+    }
+    else {xs->first = nullptr; xs->last = nullptr; }
     delete temp;
 }
 
@@ -46,9 +51,15 @@ void cons(int x, LinkedList xs) {
     }
     else { 
         n->next = nullptr;
+        xs->last = n;
     }
     xs->first = n;
     xs->cantidad++;
+}
+
+void append(LinkedList xs, LinkedList ys) {
+    xs->last->next = ys->first;
+    delete ys;
 }
 
 ListIterator getIterator(LinkedList xs) {
@@ -79,16 +90,12 @@ void disposeIterator(ListIterator it) {
 
 void snoc(int x, LinkedList xs) {
     NodeL* n = new NodeL; n->elem = x; n->next = nullptr;
-    if(isEmpty(xs)) {
+    if (isEmpty(xs)) {
         xs->first = n;
+        xs->last = n;
     }
     else {
-        IteradorSt* it = getIterator(xs);
-        while(!atEnd(it)) {
-            next(it);
-        }
-        it->current->next = n;
-        disposeIterator(it);
+        xs->last->next = n;
     }
     xs->cantidad++;
 }
