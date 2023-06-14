@@ -11,6 +11,9 @@ using namespace std;
 //==========================================================================
 struct TableroInfinitoHeader {
   // TODO: COMPLETAR
+  BiBST celdaActual;
+  BiBST tablero;
+
 }; 
 /* INV.REP.:
   TODO: 
