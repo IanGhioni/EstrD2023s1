@@ -5,6 +5,7 @@
 int main() {
     // g++ -o app testBiBST.cpp  BiBST.h BiBST.cpp
     BiBST t = EMPTYBB;
+    
     t = insertBBNode(t, 0, 0); // Se deberia insertar en la raiz.
     insertBBNode(t, 1, 1); // Se deberia insertar en el cuadrante NE
     insertBBNode(t, 2, (-2)); // Se deberia insertar en el cuadrante SE
@@ -51,5 +52,6 @@ int main() {
     if (findBBNode(t,-4,-3) == nullptr) {
         cout << "Clave (-4,-3) FALLO, retorno nulo y no deberia D:" << endl;
     }
-    else {cout << "Clave (-4,-3) paso el test :D" << endl; }
+    else {cout << "Clave (-4,-3) paso el test :D" << endl << endl << endl; }
+    
 }
