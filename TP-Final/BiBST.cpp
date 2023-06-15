@@ -121,6 +121,9 @@ BBNode* insertBBNode(BBNode* nodo, int x, int y) {
     nodoNuevo->kx = x; nodoNuevo->ky = y;// al nodo y retorno eso nada mas.
     return nodoNuevo;
   }
+  else if(nodo->kx == x && nodo->ky == y) {
+    return nodo;
+  }
   else { // El otro caso de que la raiz no sea null, entonces busco en el hijo correspondiente y me guardo el nodo padre.
     return insertNextBBNode(nodo, nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)], x, y);
   }

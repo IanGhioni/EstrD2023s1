@@ -33,7 +33,7 @@ TableroInfinito TInfInicial(){
   t->x = 0; t->y = 0;
   t->tablero = insertBBNode(EMPTYBB, 0, 0);
   t->celdaActual = findBBNode(t->tablero, 0, 0);
-  return;
+  return t;
 }
 
 //--------------------------------------------------------------------------
@@ -62,19 +62,19 @@ void MoverNTInf(TableroInfinito t, Dir dir, int n){
   // PRECOND: la dirección dada es válida
   if (dir == NORTE) { // suma a y
     t->y += n;
-    insertBBNode(t->tablero,t->x,t->y);
+    t->celdaActual = insertBBNode(t->tablero,t->x,t->y);
   }
   else if (dir == SUR) { // resta a y
     t->y -= n;
-    insertBBNode(t->tablero,t->x,t->y);
+    t->celdaActual = insertBBNode(t->tablero,t->x,t->y);
   }
   else if (dir == ESTE) { // suma a x
     t->x += n;
-    insertBBNode(t->tablero,t->x,t->y);
+    t->celdaActual = insertBBNode(t->tablero,t->x,t->y);
   }
   else { // resta a x
     t->x -= n;
-    insertBBNode(t->tablero,t->x,t->y);
+    t->celdaActual = insertBBNode(t->tablero,t->x,t->y);
   }
 }
 
