@@ -38,8 +38,10 @@ TableroInfinito TInfInicial(){
 
 //--------------------------------------------------------------------------
 void PonerNTInf(TableroInfinito t, Color color, int n){
-  // Proposito: Pone n bolitas del color dado en la celda actual
-  // PRECOND: el color es válido
+  // Proposito: Dado un tablero, un color y un numero, pone n bolitas del color dado en la celda actual
+  // PRECOND: 
+  // * el color es válido
+  // * n es un numero mayor a 0.
   t->celdaActual->bolitas[color]+=n;
 }
 
@@ -55,7 +57,8 @@ void SacarNTInf(TableroInfinito t, Color color, int n){
 
 //--------------------------------------------------------------------------
 void MoverNTInf(TableroInfinito t, Dir dir, int n){
-  // Proposito: Desplaza el cabezal n posiciones en la direccion dada, actualizando la posicion a la que apunta el cabezal.
+  // Proposito: Dado un tablero, una direccion y un numero, desplaza el cabezal n posiciones en la 
+  // direccion dada, actualizando la posicion a la que apunta el cabezal.
   // PRECOND: la dirección dada es válida
   if (dir == NORTE) { // suma a y
     t->y += n;
@@ -77,13 +80,14 @@ void MoverNTInf(TableroInfinito t, Dir dir, int n){
 
 //--------------------------------------------------------------------------
 int nroBolitasTInf(TableroInfinito t, Color color) {
-  // Proposito: Retorna la cantidad de boñitas del color dado que hay en la celda actual.
+  // Proposito: Dado un tablero y un color, retorna la cantidad de boñitas del color dado que hay en la celda actual.
   // PRECOND: el color es válido
   return t->celdaActual->bolitas[color]; 
 }
 
 //--------------------------------------------------------------------------
 void LiberarTInf(TableroInfinito t){
+  // Proposito: Dado un tablero, libera la memoria ocupada por el tablero.
   LiberarBiBST(t->tablero);
 }
 
