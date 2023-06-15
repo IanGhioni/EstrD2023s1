@@ -1,8 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "BiBST.h"
-//! VER ESTO CON ALGUIEN QUE SEPA xD
-#include "TiposBasicos.h"
+#include "TiposBasicos.h"//! VER ESTO CON ALGUIEN QUE SEPA xD
 using namespace std;
 
 //==========================================================================
@@ -94,10 +93,11 @@ BBNode* findBBNode(BBNode* nodo, int x, int y) {
   // TODO: ¿REFACTORIZAR?
 }
 
-/*
+/* 
+TODO: BORRAR ESTO CUANDO LO CONSULTE MAÑANA.
 BBNode* sigNodoCorespondiente(BBNode* nodo, int x, int y) {
-  //! Proposito: Dado un nodo y dos claves, retorna el hijo correspondiente en base a las claves dadas.
-  //! Precondicion: nodo no es NULL.
+  // Proposito: Dado un nodo y dos claves, retorna el hijo correspondiente en base a las claves dadas.
+  // Precondicion: nodo no es NULL.
   if (nodo->kx > x && nodo->ky > y) {
     return nodo->hijo[0];
   }
