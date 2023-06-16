@@ -10,29 +10,23 @@ using namespace std;
 // Implementación de TableroInfinito
 //==========================================================================
 struct TableroInfinitoHeader {
-  BiBST celdaActual; // Celda actual donde se encuentra el cabezal
   int x; // Coordenada x de la celda actual.
   int y; // Coordenada y de la celda actual.
   BiBST tablero; // Tablero
-
 }; 
 /* INV.REP.:
-  TODO: REVISAR MAÑANA
-    * celdaActual es la celda actual en la que se encuentra el cabezal.
-    * celdaActual debe ser una celda del tablero.
-    * x es la coordenada x de celdaActual.
-    * y es la coordenada y de celdaActual.
-    * tablero es el tablero completo.
+  TODO: REVISAR con alguien esto :/
+    * x es la coordenada x de la celda actual en la que se encuentra nuestro cabezal.
+    * y es la coordenada y de la celda actual en la que se encuentra nuestro cabezal.
     * tablero no tiene celdas repetidas.
 */
 
 //--------------------------------------------------------------------------
 TableroInfinito TInfInicial(){
-  // Proposito: Retorna un tablero infinito vacio de bolitas, dejando el cabezal en la posicion (0, 0).
+  // Proposito: Retorna un tablero infinito vacio de bolitas, dejando el cabezal en la celda (0, 0).
   TableroInfinitoHeader* t = new TableroInfinitoHeader;
-  t->x = 0; t->y = 0;
   t->tablero = insertBBNode(EMPTYBB, 0, 0);
-  t->celdaActual = findBBNode(t->tablero, 0, 0);
+  t->x = 0; t->y = 0;
   return t;
 }
 
@@ -42,7 +36,7 @@ void PonerNTInf(TableroInfinito t, Color color, int n){
   // PRECOND: 
   //      * el color es válido
   //      * n es un numero mayor a 0.
-  t->celdaActual->bolitas[color]+=n;
+  insertBBNode(t->tablero, t->x, t->y)->bolitas[color]+=n;
 }
 
 //--------------------------------------------------------------------------
@@ -53,42 +47,42 @@ void SacarNTInf(TableroInfinito t, Color color, int n){
   //      * el color es válido
   //      * hay al menos n bolitas en la celda actual en t
   //      * n es un numero mayor a 0.
-  if (t->celdaActual->bolitas[color]-n < 0) {
-    BOOM("No se puede sacar una bolita del color dado: No hay suficientes bolitas de ese color.");
+  BiBST celdaActual = insertBBNode(t->tablero,t->x,t->y);
+  if (celdaActual->bolitas[color]-n < 0) { 
+    // Si en la celda actual no hay al menos n bolitas para sacar, hago un BOOM.
+    BOOM("No se puede sacar una bolita del color dado. No hay suficientes bolitas de ese color.");
   }
-  else {
-    t->celdaActual->bolitas[color] -= n;
-  }
+  else { // En caso de que haya, actualizo las bolitas de la celda actual.
+    celdaActual->bolitas[color] -= n;
+  } 
 }
 
 //--------------------------------------------------------------------------
 void MoverNTInf(TableroInfinito t, Dir dir, int n){
   // Proposito: Dado un tablero, una direccion y un numero, desplaza el cabezal n posiciones en la 
   // direccion dada, actualizando la posicion a la que apunta el cabezal.
-  // PRECOND: la dirección dada es válida
-  if (dir == NORTE) { // suma a y
+  // PRECOND: 
+  //      * la dirección dada es válida.
+  //      * n es un numero mayor a 0.
+  if (dir == NORTE) { // Si dir es NORTE, suma n a y
     t->y += n;
-    t->celdaActual = insertBBNode(t->tablero,t->x,t->y);
   }
-  else if (dir == SUR) { // resta a y
+  else if (dir == SUR) { // Si dir es SUR, resta n a y
     t->y -= n;
-    t->celdaActual = insertBBNode(t->tablero,t->x,t->y);
   }
-  else if (dir == ESTE) { // suma a x
+  else if (dir == ESTE) { // Si dir es ESTE, suma n a x
     t->x += n;
-    t->celdaActual = insertBBNode(t->tablero,t->x,t->y);
-  }
-  else { // resta a x
-    t->x -= n;
-    t->celdaActual = insertBBNode(t->tablero,t->x,t->y);
+  }            //TODO: Preguntar quizas esto?
+  else {       // Si no es ninguno de los casos anteriores, entonces por precondicion es OESTE,
+    t->x -= n; // porque es la unica direccion valida que queda. Por lo tanto, le resto n a x
   }
 }
 
 //--------------------------------------------------------------------------
 int nroBolitasTInf(TableroInfinito t, Color color) {
-  // Proposito: Dado un tablero y un color, retorna la cantidad de boñitas del color dado que hay en la celda actual.
-  // PRECOND: el color es válido
-  return t->celdaActual->bolitas[color]; 
+  // Proposito: Dado un tablero y un color, retorna la cantidad de bolitas del color dado que hay en la celda actual.
+  // PRECOND: el color es válido.
+  return insertBBNode(t->tablero,t->x,t->y)->bolitas[color];
 }
 
 //--------------------------------------------------------------------------
