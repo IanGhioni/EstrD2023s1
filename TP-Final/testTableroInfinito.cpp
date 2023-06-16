@@ -20,4 +20,9 @@ int main() {
     PonerNTInf(t, AZUL, 5);
     MoverNTInf(t, ESTE, 3);
     PrintRepTInf(t);
+    cout << endl;
+    SacarNTInf(t,AZUL,5);
+    PrintRepTInf(t);
+    cout << endl;
+    SacarNTInf(t,AZUL,5);
 }

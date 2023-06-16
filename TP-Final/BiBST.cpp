@@ -1,7 +1,7 @@
 #include <iostream>
 #include <algorithm>
 #include "BiBST.h"
-#include "TiposBasicos.h"//! VER ESTO CON ALGUIEN QUE SEPA xD
+#include "TiposBasicos.h"
 using namespace std;
 
 //==========================================================================
@@ -131,7 +131,7 @@ BBNode* insertBBNode(BBNode* nodo, int x, int y) {
 
 
 void LiberarBiBST(BiBST t) { 
-  // Dado un arbol, libera la memoria ocupada por el arbol. 
+  // Proposito: Dado un arbol, libera la memoria ocupada por el arbol. 
   if (t != nullptr) { // Si t no es null, primero libero la memoria de sus hijos y luego libero la memoria de t.
     LiberarBiBST(t->hijo[0]);
     LiberarBiBST(t->hijo[1]);

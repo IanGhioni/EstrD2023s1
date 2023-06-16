@@ -5,6 +5,7 @@ using namespace std;
 #include "TableroInfinito.h"
 
 int main(){
+  // g++ -o app main.cpp TableroInfinito.cpp TableroInfinito.h BiBST.h BiBST.cpp
   TableroInfinito t = TInfInicial();
   PonerNTInf(t, ROJO,  1);  PrintRepTInf(t);
   PonerNTInf(t, AZUL,  1);
@@ -66,3 +67,38 @@ Test nroBolitas(Azul) ( 0,0) - Azul: 1 (debe ser `Azul: 1`)
 Test nroBolitas(Azul) (-5,0) - Azul: 2 (debe ser `Azul: 2`)
 */
      
+/* ANDAR ANDA PERO ESTO ES LO QUE ME PRINTEO.
+LO QUE ME PRINTEO: SE DIFERENCIA POR LA LINEA 97.
+Celda actual: (0, 0)
+BiBST:
+  (0,0): Azul: 0, Negro: 0, Rojo: 1, Verde: 0
+
+Celda actual: (-1, 0)
+BiBST:
+  (0,0): Azul: 1, Negro: 0, Rojo: 1, Verde: 0
+   (-1,0): Azul: 0, Negro: 0, Rojo: 0, Verde: 1
+
+Celda actual: (-5, 0)
+BiBST:
+  (0,0): Azul: 1, Negro: 0, Rojo: 1, Verde: 0
+   (-1,0): Azul: 0, Negro: 0, Rojo: 0, Verde: 1
+    (-5,0): Azul: 2, Negro: 0, Rojo: 1, Verde: 0
+
+Celda actual: (0, 0)
+BiBST:
+  (0,0): Azul: 1, Negro: 0, Rojo: 3, Verde: 0
+   (-1,0): Azul: 0, Negro: 0, Rojo: 0, Verde: 1
+    (-5,0): Azul: 2, Negro: 0, Rojo: 1, Verde: 0
+
+Celda actual: (1, 1)
+BiBST:
+  (0,0): Azul: 1, Negro: 0, Rojo: 3, Verde: 0
+   (1,1): Azul: 0, Negro: 1, Rojo: 0, Verde: 0 
+   (1,0): Azul: 0, Negro: 0, Rojo: 0, Verde: 0 // Que tan grave es este error?
+   (-1,0): Azul: 0, Negro: 0, Rojo: 0, Verde: 1
+    (-5,0): Azul: 2, Negro: 0, Rojo: 1, Verde: 0
+
+Test nroBolitas(Rojo) ( 0,0) - Rojo: 3 (debe ser `Rojo: 3`)
+Test nroBolitas(Azul) ( 0,0) - Azul: 1 (debe ser `Azul: 1`)
+Test nroBolitas(Azul) (-5,0) - Azul: 2 (debe ser `Azul: 2`)
+*/

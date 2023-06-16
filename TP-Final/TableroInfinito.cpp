@@ -40,19 +40,25 @@ TableroInfinito TInfInicial(){
 void PonerNTInf(TableroInfinito t, Color color, int n){
   // Proposito: Dado un tablero, un color y un numero, pone n bolitas del color dado en la celda actual
   // PRECOND: 
-  // * el color es válido
-  // * n es un numero mayor a 0.
+  //      * el color es válido
+  //      * n es un numero mayor a 0.
   t->celdaActual->bolitas[color]+=n;
 }
 
 //--------------------------------------------------------------------------
 void SacarNTInf(TableroInfinito t, Color color, int n){
-  // PRECOND:
-  //  * el color es válido
-  //  * hay al menos n bolitas en la celda actual en t
-  //! ESTA PRECONDICION VINO DADA, ENTONCES NO VEO RAZON DE USAR BOOM.
-  //! PREGUNTAR EN CLASE
-  // TODO: COMPLETAR
+  // Proposito: Dado un tablero, un color y un numero n, 
+  // saca de la celda actual n bolitas del color dado.
+  // PRECONDICION:
+  //      * el color es válido
+  //      * hay al menos n bolitas en la celda actual en t
+  //      * n es un numero mayor a 0.
+  if (t->celdaActual->bolitas[color]-n < 0) {
+    BOOM("No se puede sacar una bolita del color dado: No hay suficientes bolitas de ese color.");
+  }
+  else {
+    t->celdaActual->bolitas[color] -= n;
+  }
 }
 
 //--------------------------------------------------------------------------
@@ -97,4 +103,5 @@ void LiberarTInf(TableroInfinito t){
 void PrintRepTInf(TableroInfinito t) {
   cout << "Celda actual: (" << t->x << ", " << t->y << ")" << endl;
   PrintBB(t->tablero);
+  cout << endl;
 }
