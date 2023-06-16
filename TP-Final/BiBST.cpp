@@ -93,26 +93,6 @@ BBNode* findBBNode(BBNode* nodo, int x, int y) {
   // TODO: ¿REFACTORIZAR?
 }
 
-/* 
-TODO: BORRAR ESTO CUANDO LO CONSULTE MAÑANA.
-BBNode* sigNodoCorespondiente(BBNode* nodo, int x, int y) {
-  // Proposito: Dado un nodo y dos claves, retorna el hijo correspondiente en base a las claves dadas.
-  // Precondicion: nodo no es NULL.
-  if (nodo->kx > x && nodo->ky > y) {
-    return nodo->hijo[0];
-  }
-  else if (nodo->kx > x && nodo->ky <= y) {
-    return nodo->hijo[1];
-  }
-  else if (nodo->kx <= x && nodo->ky > y) {
-    return nodo->hijo[2];
-  }
-  else if (nodo->kx <= x && nodo->ky <= y) {
-    return nodo->hijo[3];
-  }
-}
-*/
-
 BBNode* insertBBNode(BBNode* nodo, int x, int y) { 
   // Proposito: Dado un nodo y dos claves, devuelve el nodo cuyas claves sean iguales a "x" e "y".
   // Si el nodo no existe, crea un nodo nuevo con esas claves.
@@ -133,10 +113,10 @@ BBNode* insertBBNode(BBNode* nodo, int x, int y) {
 void LiberarBiBST(BiBST t) { 
   // Proposito: Dado un arbol, libera la memoria ocupada por el arbol. 
   if (t != nullptr) { // Si t no es null, primero libero la memoria de sus hijos y luego libero la memoria de t.
-    LiberarBiBST(t->hijo[0]);
-    LiberarBiBST(t->hijo[1]);
-    LiberarBiBST(t->hijo[2]);
-    LiberarBiBST(t->hijo[3]);
+    LiberarBiBST(t->hijo[NE]);
+    LiberarBiBST(t->hijo[SE]);
+    LiberarBiBST(t->hijo[NO]);
+    LiberarBiBST(t->hijo[SO]);
     delete t;
   }
 }
