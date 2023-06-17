@@ -15,7 +15,9 @@ struct TableroInfinitoHeader {
   BiBST tablero; // Tablero
 }; 
 /* INV.REP.:
+//========================================
   TODO: REVISAR con alguien esto :/
+//========================================
     * x es la coordenada x de la celda actual en la que se encuentra nuestro cabezal.
     * y es la coordenada y de la celda actual en la que se encuentra nuestro cabezal.
     * tablero no tiene celdas repetidas.

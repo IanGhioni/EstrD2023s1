@@ -7,7 +7,10 @@ using namespace std;
 //==========================================================================
 // Invariante de representación
 //==========================================================================
-/* 
+/*
+//========================================
+  TODO: REVISAR con alguien esto :/
+//======================================== 
   ?INV.REP.
   Siendo "kx" y "ky" las claves del nodo actual (las cuales llamare "x" e "y", respectivamente), 
   "bolitas" las bolitas de este nodo, y "hijo" los subarboles del arbol:
@@ -22,7 +25,7 @@ using namespace std;
         * El subarbol indexado por NO cumple que su clave kx es mayor/igual que x y su clave ky es menor que y.
         * El subarbol indexado por SO cumple que su clave kx es mayor/igual que x y su clave ky es mayor/igual que y.
     
-    * Los subarboles de cada subarbol del arreglo de "hijo, cumplen con estos invariantes previamente mencionados
+    * Los arboles del arreglo de "hijo", cumplen con estos invariantes previamente mencionados
   */
 
 
