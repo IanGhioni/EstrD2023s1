@@ -15,12 +15,10 @@ struct TableroInfinitoHeader {
   BiBST tablero; // Tablero
 }; 
 /* INV.REP.:
-//========================================
-  TODO: REVISAR con alguien esto :/
-//========================================
-    * x es la coordenada x de la celda actual en la que se encuentra nuestro cabezal.
-    * y es la coordenada y de la celda actual en la que se encuentra nuestro cabezal.
+    * x es la coordenada x de la celda actual en la que se encuentra el cabezal.
+    * y es la coordenada y de la celda actual en la que se encuentra el cabezal.
     * tablero no tiene celdas repetidas.
+    * No se pueden sacar de una celda bolitas de un color si no hay suficientes bolitas para sacar.
 */
 
 //--------------------------------------------------------------------------
@@ -74,9 +72,9 @@ void MoverNTInf(TableroInfinito t, Dir dir, int n){
   }
   else if (dir == ESTE) { // Si dir es ESTE, suma n a x
     t->x += n;
-  }            //TODO: Preguntar quizas esto?
+  }            
   else {       // Si no es ninguno de los casos anteriores, entonces por precondicion es OESTE,
-    t->x -= n; // porque es la unica direccion valida que queda. Por lo tanto, le resto n a x
+    t->x -= n; // porque es la unica direccion válida que queda. Por lo tanto, le resto n a x
   }
 }
 

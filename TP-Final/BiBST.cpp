@@ -8,24 +8,20 @@ using namespace std;
 // Invariante de representación
 //==========================================================================
 /*
-//========================================
-  TODO: REVISAR con alguien esto :/
-//======================================== 
-  ?INV.REP.
+INV.REP.:
   Siendo "kx" y "ky" las claves del nodo actual (las cuales llamare "x" e "y", respectivamente), 
   "bolitas" las bolitas de este nodo, y "hijo" los subarboles del arbol:
-    * kx es un numero entero.
-    * ky es un numero entero.
+    * x es un numero entero.
+    * y es un numero entero.
     * No existe una clave repetida en el arbol.
     * "bolitas" son las 4 cantidades de bolitas de color azul, negro, rojo y verde, indexadas en ese orden.
         * La cantidad de bolitas por color es mayor o igual a 0.
-    * "hijo" son los 4 subarboles indexados por cuadrante en el siguiente orden: NE, SE, NO, SO.
+    * "hijo" son 4 subarboles hijos, indexados por cuadrante en el siguiente orden: NE, SE, NO, SO.
         * El subarbol indexado por NE cumple que su clave kx es menor que x y su clave ky es menor que y.
         * El subarbol indexado por SE cumple que su clave kx es menor que x y su clave ky es mayor/igual que y.
         * El subarbol indexado por NO cumple que su clave kx es mayor/igual que x y su clave ky es menor que y.
         * El subarbol indexado por SO cumple que su clave kx es mayor/igual que x y su clave ky es mayor/igual que y.
-    
-    * Los arboles del arreglo de "hijo", cumplen con estos invariantes previamente mencionados
+    * Los arboles del array de "hijo", cumplen con estos invariantes previamente mencionados
   */
 
 
@@ -39,10 +35,8 @@ using namespace std;
 
 
 //==========================================================================
-//TODO: Implementación
-//==========================================================================
 
-//? ___FUNCION AUXILIAR_____
+//___FUNCION AUXILIAR___
 Cuadrante cuadranteCorrespondiente(int kx, int ky, int x, int y) {
   // Proposito: Dado el par de claves (kx,ky) y el par de claves (x,y), retorna el cuadrante correspondiente 
   // al comparar ambas claves.
@@ -64,7 +58,7 @@ Cuadrante cuadranteCorrespondiente(int kx, int ky, int x, int y) {
   }
 }
 
-//? ___FUNCION AUXILIAR_____
+//___FUNCION AUXILIAR___
 BBNode* insertNextBBNode(BBNode* nodoPadre, BBNode* nodo, int x, int y) {
   // Proposito: Dado 2 nodos y un par de claves x e y, devuelve el nodo cuyas claves sean iguales a "x" e "y".
   // Si el nodo no existe, crea un nodo nuevo con esas claves y lo inserta como hijo del nodo "nodoPadre".
