@@ -96,14 +96,14 @@ BBNode* insertBBNode(BBNode* nodo, int x, int y) {
   // Proposito: Dado un nodo y dos claves, devuelve el nodo cuyas claves sean iguales a "x" e "y".
   // Si el nodo no existe, crea un nodo nuevo con esas claves.
   if (nodo == EMPTYBB) {  
-    BBNode* nodoNuevo = new BBNode;      // Como explicar este caso borde de que la raiz es null entonces lo creo
-    nodoNuevo->kx = x; nodoNuevo->ky = y;// al nodo y retorno eso nada mas.
+    BBNode* nodoNuevo = new BBNode;       // Si la raiz es null, no hay hijos en los cuales insertar el nodo, 
+    nodoNuevo->kx = x; nodoNuevo->ky = y; // por lo tanto creo el nodo y retorno ese nodo.
     return nodoNuevo;
   }
-  else if(nodo->kx == x && nodo->ky == y) {
+  else if(nodo->kx == x && nodo->ky == y) { // Verifico si la raiz es el nodo que estoy buscando
     return nodo;
   }
-  else { // El otro caso de que la raiz no sea null, entonces busco en el hijo correspondiente y me guardo el nodo padre.
+  else { // Busco en el hijo correspondiente y me guardo el nodo padre, para hacer la insercion si debo.
     return insertNextBBNode(nodo, nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)], x, y);
   }
 }
