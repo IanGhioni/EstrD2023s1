@@ -25,7 +25,6 @@ struct TableroInfinitoHeader {
 TableroInfinito TInfInicial(){
   // Proposito: Retorna un tablero infinito vacio de bolitas, dejando el cabezal en la celda (0, 0).
   TableroInfinitoHeader* t = new TableroInfinitoHeader;
-  t->tablero = insertBBNode(EMPTYBB, 0, 0);
   t->x = 0; t->y = 0;
   return t;
 }
@@ -36,7 +35,10 @@ void PonerNTInf(TableroInfinito t, Color color, int n){
   // PRECOND: 
   //      * el color es válido
   //      * n es un numero mayor a 0.
-  insertBBNode(t->tablero, t->x, t->y)->bolitas[color]+=n;
+  if (!VALIDCOLOR(color)) {
+    BOOM("El color dado es invalido.");
+  }
+  else { insertBBNode(t->tablero, t->x, t->y)->bolitas[color]+=n; }
 }
 
 //--------------------------------------------------------------------------
@@ -47,8 +49,11 @@ void SacarNTInf(TableroInfinito t, Color color, int n){
   //      * el color es válido
   //      * hay al menos n bolitas en la celda actual en t
   //      * n es un numero mayor a 0.
-  BiBST celdaActual = insertBBNode(t->tablero,t->x,t->y);
-  if (celdaActual->bolitas[color]-n < 0) { 
+  BiBST celdaActual = findBBNode(t->tablero,t->x,t->y);
+  if (!VALIDCOLOR(color)) {
+    BOOM("El color dado es invalido.");
+  }
+  else if (celdaActual == EMPTYBB || celdaActual->bolitas[color]-n < 0) { 
     // Si en la celda actual no hay al menos n bolitas para sacar, hago un BOOM.
     BOOM("No se puede sacar una bolita del color dado. No hay suficientes bolitas de ese color.");
   }
@@ -64,7 +69,10 @@ void MoverNTInf(TableroInfinito t, Dir dir, int n){
   // PRECOND: 
   //      * la dirección dada es válida.
   //      * n es un numero mayor a 0.
-  if (dir == NORTE) { // Si dir es NORTE, suma n a y
+  if (!VALIDDIR(dir)) {
+    BOOM("La dirección dada es invalida.");
+  }
+  else if (dir == NORTE) { // Si dir es NORTE, suma n a y
     t->y += n;
   }
   else if (dir == SUR) { // Si dir es SUR, resta n a y
@@ -82,13 +90,20 @@ void MoverNTInf(TableroInfinito t, Dir dir, int n){
 int nroBolitasTInf(TableroInfinito t, Color color) {
   // Proposito: Dado un tablero y un color, retorna la cantidad de bolitas del color dado que hay en la celda actual.
   // PRECOND: el color es válido.
-  return insertBBNode(t->tablero,t->x,t->y)->bolitas[color];
+  if (!VALIDCOLOR(color)) {
+    BOOM("El color dado es invalido.");
+  }
+  if (findBBNode(t->tablero,t->x,t->y) == EMPTYBB) {
+    return 0;
+  }
+  else { return findBBNode(t->tablero,t->x,t->y)->bolitas[color]; }
 }
 
 //--------------------------------------------------------------------------
 void LiberarTInf(TableroInfinito t){
   // Proposito: Dado un tablero, libera la memoria ocupada por el tablero.
   LiberarBiBST(t->tablero);
+  delete t;
 }
 
 //==========================================================================

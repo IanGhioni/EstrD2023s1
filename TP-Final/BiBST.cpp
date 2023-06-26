@@ -11,8 +11,8 @@ using namespace std;
 INV.REP.:
   Siendo "kx" y "ky" las claves del nodo actual (las cuales llamare "x" e "y", respectivamente), 
   "bolitas" las bolitas de este nodo, y "hijo" los subarboles del arbol:
-    * x es un numero entero.
-    * y es un numero entero.
+    ! x es un numero entero. 
+    ! y es un numero entero.
     * No existe una clave repetida en el arbol.
     * "bolitas" son las 4 cantidades de bolitas de color azul, negro, rojo y verde, indexadas en ese orden.
         * La cantidad de bolitas por color es mayor o igual a 0.
@@ -53,7 +53,7 @@ Cuadrante cuadranteCorrespondiente(int kx, int ky, int x, int y) {
   else if (x <= kx && y > ky) {
     return NO;
   }
-  else if (x <= kx && y <= ky) {
+  else {
     return SO;
   }
 }
