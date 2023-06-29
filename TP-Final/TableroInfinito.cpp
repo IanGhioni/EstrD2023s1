@@ -14,11 +14,8 @@ struct TableroInfinitoHeader {
   int y; // Coordenada y de la celda actual.
   BiBST tablero; // Tablero
 }; 
-/* INV.REP.:
-    * x es la coordenada x de la celda actual en la que se encuentra el cabezal.
-    * y es la coordenada y de la celda actual en la que se encuentra el cabezal.
+/* INV.REP.: 
     * tablero no tiene celdas repetidas.
-    * No se pueden sacar de una celda bolitas de un color si no hay suficientes bolitas para sacar.
 */
 
 //--------------------------------------------------------------------------
@@ -26,6 +23,7 @@ TableroInfinito TInfInicial(){
   // Proposito: Retorna un tablero infinito vacio de bolitas, dejando el cabezal en la celda (0, 0).
   TableroInfinitoHeader* t = new TableroInfinitoHeader;
   t->x = 0; t->y = 0;
+  t->tablero = EMPTYBB;
   return t;
 }
 
@@ -38,7 +36,11 @@ void PonerNTInf(TableroInfinito t, Color color, int n){
   if (!VALIDCOLOR(color)) {
     BOOM("El color dado es invalido.");
   }
-  else { insertBBNode(t->tablero, t->x, t->y)->bolitas[color]+=n; }
+  else if (t->tablero == EMPTYBB) { 
+    t->tablero = insertBBNode(t->tablero, t->x, t->y);
+    findBBNode(t->tablero, t->x, t->y)->bolitas[color]+=n;
+  }
+  else {insertBBNode(t->tablero, t->x, t->y)->bolitas[color]+=n;}
 }
 
 //--------------------------------------------------------------------------
@@ -93,7 +95,7 @@ int nroBolitasTInf(TableroInfinito t, Color color) {
   if (!VALIDCOLOR(color)) {
     BOOM("El color dado es invalido.");
   }
-  if (findBBNode(t->tablero,t->x,t->y) == EMPTYBB) {
+  else if (findBBNode(t->tablero,t->x,t->y) == EMPTYBB) {
     return 0;
   }
   else { return findBBNode(t->tablero,t->x,t->y)->bolitas[color]; }
@@ -106,9 +108,9 @@ void LiberarTInf(TableroInfinito t){
   delete t;
 }
 
-//==========================================================================
+
 // Impresión para verificaciones
-//==========================================================================
+
 void PrintRepTInf(TableroInfinito t) {
   cout << "Celda actual: (" << t->x << ", " << t->y << ")" << endl;
   PrintBB(t->tablero);

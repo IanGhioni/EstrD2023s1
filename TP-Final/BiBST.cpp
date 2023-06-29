@@ -11,9 +11,7 @@ using namespace std;
 INV.REP.:
   Siendo "kx" y "ky" las claves del nodo actual (las cuales llamare "x" e "y", respectivamente), 
   "bolitas" las bolitas de este nodo, y "hijo" los subarboles del arbol:
-    ! x es un numero entero. 
-    ! y es un numero entero.
-    * No existe una clave repetida en el arbol.
+    * No existe un par de claves repetida en el arbol.
     * "bolitas" son las 4 cantidades de bolitas de color azul, negro, rojo y verde, indexadas en ese orden.
         * La cantidad de bolitas por color es mayor o igual a 0.
     * "hijo" son 4 subarboles hijos, indexados por cuadrante en el siguiente orden: NE, SE, NO, SO.
@@ -103,9 +101,19 @@ BBNode* insertBBNode(BBNode* nodo, int x, int y) {
   else if(nodo->kx == x && nodo->ky == y) { // Verifico si la raiz es el nodo que estoy buscando
     return nodo;
   }
-  else { // Busco en el hijo correspondiente y me guardo el nodo padre, para hacer la insercion si debo.
-    return insertNextBBNode(nodo, nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)], x, y);
+  //!else { // Busco en el hijo correspondiente y me guardo el nodo padre, para hacer la insercion si debo.
+  //!  return insertNextBBNode(nodo, nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)], x, y);
+  //!}
+  else if (nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)] == EMPTYBB) {
+    BBNode* nodoNuevo = new BBNode;
+    nodoNuevo->kx = x; nodoNuevo->ky = y;
+    nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)] = nodoNuevo;
+    return nodoNuevo;
   }
+  else {
+    return insertBBNode(nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)],x,y);
+  }
+  
 }
 
 void LiberarBiBST(BiBST t) { 
@@ -129,9 +137,9 @@ void LiberarBiBST(BiBST t) {
 
 
 
-//==========================================================================
+
 // Impresión para verificaciones
-//==========================================================================
+
 void PrintBBNode(BBNode* t, int tab) {
   if (t == NULL) { return; }
   INDENT(tab)
@@ -152,3 +160,14 @@ void PrintBB(BiBST t) {
   PrintBBNode(t, 0);
 }
 
+/*
+# BiBST
+- el compilador muestra un warning al compilar relacionado a que la función cuadranteCorrespondiente podria 
+no retornar un valor, lo cual es cierto y debería ser corregido.
+- el compilador muestra un warning al compilar relacionado a que la función findBBNode podría no retornar un valor, 
+lo cual es cierto y debería ser corregido, esto implica además que no cumple con la consigna, te recomiendo 
+probarlo con casos más complejos para asegurarte que tu implementación funciona correctamente para la próxima entrega.
+- la implementación de insertBBNode es artificiosa, en particular porque la responsabilidad de asignar un nodo hijo 
+al nodo actual es de la instancia de la recursión asociada al nodo actual, y no a la del hijo, esto significa que no 
+es conveniente pasar al padre para que en caso de crear el nodo podamos conectarlo.
+*/
