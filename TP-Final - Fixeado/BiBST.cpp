@@ -64,7 +64,7 @@ BBNode* findBBNode(BBNode* nodo, int x, int y) {
     return nodo;                             // retorno el nodo.
   }
   else { // Si no son iguales, sigue buscando en el cuadrante correspondiente la clave (x,y)
-    findBBNode(nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)], x, y);
+    return findBBNode(nodo->hijo[cuadranteCorrespondiente(nodo->kx, nodo->ky, x,y)], x, y);
   }
 }
 
