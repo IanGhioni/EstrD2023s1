@@ -2,6 +2,8 @@
 #include <algorithm>
 #include "BiBST.h"
 #include "TiposBasicos.h"
+#include "QueueBiBST.h"
+#include "StackBiBST.h"
 using namespace std;
 
 //==========================================================================
@@ -134,3 +136,36 @@ void PrintBB(BiBST t) {
   cout << "BiBST:" << endl;
   PrintBBNode(t, 0);
 }
+
+int cantDeBolitasBFS(BiBST t) {
+  BiBST actual; int bolitas = 0; Queue q = emptyQ();
+  if (t != EMPTYBB) { Enqueue(t,q); }
+  while (!isEmptyQ(q)) {
+    actual = firstQ(q); Dequeue(q);
+    bolitas += actual->bolitas[0] + actual->bolitas[1] + actual->bolitas[2] + actual->bolitas[3];
+    if (actual->hijo[0] != EMPTYBB) { Enqueue(actual->hijo[0],q); }
+    if (actual->hijo[1] != EMPTYBB) { Enqueue(actual->hijo[1],q); }
+    if (actual->hijo[2] != EMPTYBB) { Enqueue(actual->hijo[2],q); }
+    if (actual->hijo[3] != EMPTYBB) { Enqueue(actual->hijo[3],q); }
+  }
+  DestroyQ(q);
+  return bolitas;
+}
+
+int cantDeBolitasDFS(BiBST t) {
+  BiBST actual;  
+  int bolitas = 0; 
+  Stack s = emptyS(); 
+  if (t != EMPTYBB) { apilar(t,s); }
+  while (!isEmptyS(s)) {
+    actual = firstS(s); desapilar(s); 
+    bolitas += actual->bolitas[0] + actual->bolitas[1] + actual->bolitas[2] + actual->bolitas[3];
+    if (actual->hijo[3] != EMPTYBB) { apilar(actual->hijo[3],s); }
+    if (actual->hijo[2] != EMPTYBB) { apilar(actual->hijo[2],s); }
+    if (actual->hijo[1] != EMPTYBB) { apilar(actual->hijo[1],s); }
+    if (actual->hijo[0] != EMPTYBB) { apilar(actual->hijo[0],s); }
+  }
+  destroyS(s);
+  return bolitas;
+}
+

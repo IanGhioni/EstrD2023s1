@@ -25,3 +25,5 @@ BBNode* insertBBNode(BBNode* nodo, int x, int y);
 void    LiberarBiBST(BiBST t);
 
 void PrintBB(BiBST t);
+int cantDeBolitasBFS(BiBST t);
+int cantDeBolitasDFS(BiBST t);
