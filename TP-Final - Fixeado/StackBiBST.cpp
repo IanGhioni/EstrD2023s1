@@ -1,4 +1,4 @@
-#include "QueueBiBST.h"
+#include "StackBiBST.h"
 #include <iostream>
 using namespace std;
 
@@ -7,12 +7,10 @@ struct NodeBiBST {
     NodeBiBST* sig;
 };
 
-typedef NodeBiBST* Node;
 struct StackBiBST {
-    Node tope;
+    NodeBiBST* tope;
     int size;
 };
-typedef StackBiBST* Stack;
 
 Stack emptyS() {
     StackBiBST* s = new StackBiBST;
@@ -21,7 +19,7 @@ Stack emptyS() {
 bool isEmptyS(Stack s) {
     return s->size == 0;
 }
-void apilar(BiBST t, Stack s) {
+void apilar(BiBST t, Stack s) { //!push()
     NodeBiBST* n = new NodeBiBST; 
     n->nodo = t;
     if (s->tope != NULL) {
@@ -30,15 +28,15 @@ void apilar(BiBST t, Stack s) {
     s->tope = n;
     s->size++;
 }
-void desapilar(Stack s){
+void desapilar(Stack s){ //!pop()
     if (s->size > 0) {
-        Node x = s->tope;
+        NodeBiBST* x = s->tope;
         s->tope = x->sig;
         delete x;
         s->size--;
     }
 }
-BiBST firstS(Stack s){
+BiBST firstS(Stack s){ // !top()
     return s->tope->nodo;
 }
 
@@ -47,8 +45,8 @@ void destroyS(Stack s){
         delete s;
     }
     else {
-        Node n = s->tope;
-        Node next;
+        NodeBiBST* n = s->tope;
+        NodeBiBST* next;
         while(n->sig != NULL) {
             next = n->sig;
             delete n; 

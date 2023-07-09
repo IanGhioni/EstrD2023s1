@@ -1,9 +1,6 @@
 #include "BiBST.h"
 #include <iostream>
 using namespace std;
-struct NodeBiBST;
-typedef NodeBiBST* Node;
-
 struct StackBiBST;
 typedef StackBiBST* Stack;
 
