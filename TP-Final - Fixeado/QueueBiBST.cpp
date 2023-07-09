@@ -7,7 +7,7 @@ struct NodeBiBST {
     NodeBiBST* sig;
 };
 
-typedef NodeBiBST* Node;
+//typedef NodeBiBST* Node;
 struct QueueBiBST {
     int cantidad; // cantidad de elementos
     NodeBiBST* primero; // puntero al primer nodo
@@ -15,7 +15,7 @@ struct QueueBiBST {
 };
 /*
 INV.REP.:
-    * Si primero es EMPTYBB <=> ultimo es EMPTYBB.
+    * Si primero es NULL <=> ultimo es NULL.
 */
 
 Queue emptyQ(){
@@ -43,18 +43,19 @@ BiBST firstQ(Queue q){
 void Enqueue(BiBST nodo, Queue q){
 //Agrega un elemento al final de la cola.
 //Costo: O(1).
-    Node n = new NodeBiBST;
+    NodeBiBST* n = new NodeBiBST;
     n->nodo = nodo; n->sig = NULL;
     if (q->cantidad == 0) {
         q->primero = n;
         q->ultimo = n;
-        q->cantidad++;
+        
     }
     else {
         q->ultimo->sig = n;
         q->ultimo = n;
-        q->cantidad++;
+        
     }
+    q->cantidad++;
 }
 
 void Dequeue(Queue q){
@@ -68,7 +69,7 @@ void Dequeue(Queue q){
         q->cantidad--; 
     }
     else {
-        Node n = q->primero;
+        NodeBiBST* n = q->primero;
         q->primero = n->sig;
         delete n;
         q->cantidad--;
@@ -78,21 +79,18 @@ void Dequeue(Queue q){
 void DestroyQ(Queue q){
 //Libera la memoria ocupada por la lista.
 //Costo: O(n).
-    int x = 0;
     if (q->cantidad == 0) {
         delete q;
     }
     else {
-        Node n = q->primero;
-        Node next;
+        NodeBiBST* n = q->primero;
+        NodeBiBST* next;
         while(n->sig != NULL) {
             next = n->sig;
             delete n; 
-            x++;
             n = next; 
         }
         delete n; 
-        x++;
         delete q;
     }
 }

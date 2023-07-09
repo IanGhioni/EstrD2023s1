@@ -1,11 +1,8 @@
 #include "BiBST.h"
 #include <iostream>
 using namespace std;
-struct NodeBiBST;
-typedef NodeBiBST* Node;
 struct QueueBiBST;
 typedef QueueBiBST* Queue;
-//Definir la siguiente interfaz de este tipo de colas, respetando el costo de las operaciones:
 
 Queue emptyQ();
 //Crea una lista vacía.
