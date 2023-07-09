@@ -169,3 +169,100 @@ int cantDeBolitasDFS(BiBST t) {
   return bolitas;
 }
 
+BBNode* findBBNodeBFS(BBNode* t, int x, int y) {
+  BiBST actual; Queue q = emptyQ();
+  BiBST ret = EMPTYBB;
+  if (t != EMPTYBB) { Enqueue(t,q); }
+  while (!isEmptyQ(q)) {
+    actual = firstQ(q); Dequeue(q);
+    if (actual->kx == x && actual->ky == y) {
+      ret = actual;
+      break;
+    }
+    if (actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)] != EMPTYBB) { 
+      Enqueue(actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)], q); 
+    }
+  }
+  DestroyQ(q);
+  return ret;
+}
+
+BBNode* findBBNodeDFS(BBNode* t, int x, int y) {
+  BiBST actual; Stack s = emptyS();
+  BiBST ret = EMPTYBB;
+  if (t != EMPTYBB) { apilar(t,s); }
+  while (!isEmptyS(s)) {
+    actual = firstS(s); desapilar(s);
+    if (actual->kx == x && actual->ky == y) {
+      ret = actual;
+      break;
+    }
+    if (actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)] != EMPTYBB) { 
+      apilar(actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)], s); 
+    }
+  }
+  destroyS(s);
+  return ret;
+}
+
+BBNode* insertBBNodeBFS(BBNode* t, int x, int y) {
+  BiBST actual; 
+  BiBST ret = EMPTYBB;
+  if (t != EMPTYBB) { 
+    Queue q = emptyQ();
+    Enqueue(t,q);
+    while (!isEmptyQ(q)) {
+      actual = firstQ(q); Dequeue(q); 
+      if (actual->kx == x && actual->ky == y) {
+        DestroyQ(q);
+        return actual;
+      }
+      else if (actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)] != EMPTYBB) { 
+        Enqueue(actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)], q);
+      }
+      else {
+        DestroyQ(q); 
+        BBNode* ret = new BBNode;    
+        ret->kx = x; ret->ky = y; 
+        actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)] = ret; 
+        return ret;
+      }
+    }
+  }
+  else {
+    BBNode* ret = new BBNode; 
+    ret->kx = x; ret->ky = y;
+    return ret;
+  }
+}
+
+BBNode* insertBBNodeDFS(BBNode* t, int x, int y) {
+  BiBST actual;
+  BiBST ret = EMPTYBB;
+  if (t != EMPTYBB) { 
+    Stack s = emptyS();
+    apilar(t,s); 
+    while (!isEmptyS(s)) {
+      actual = firstS(s); desapilar(s); 
+      if (actual->kx == x && actual->ky == y) {
+        destroyS(s);
+        return actual;
+      }
+      else if (actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)] != EMPTYBB) { 
+        apilar(actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)], s);    
+      }
+      else {
+        destroyS(s); 
+        BBNode* ret = new BBNode; 
+        ret->kx = x; ret->ky = y; 
+        actual->hijo[cuadranteCorrespondiente(actual->kx,actual->ky,x,y)] = ret; 
+        return ret;
+      }
+    }
+  }
+  else {
+    BBNode* ret = new BBNode; 
+    ret->kx = x; ret->ky = y;
+    return ret;
+  }
+}
