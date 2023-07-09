@@ -95,7 +95,6 @@ void DestroyQ(Queue q){
         x++;
         delete q;
     }
-    cout << "Elementos borrados = " << x << endl;
 }
 
 

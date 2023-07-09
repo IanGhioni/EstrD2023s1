@@ -115,3 +115,11 @@ void PrintRepTInf(TableroInfinito t) {
   PrintBB(t->tablero);
   cout << endl;
 }
+
+
+
+
+void cantDeBolitasEnElTablero(TableroInfinito t) {
+  cout << "Retorna de cantDeBolitasBFS: " << cantDeBolitasBFS(t->tablero) << endl;
+  cout << "Retorna de cantDeBolitasDFS: " << cantDeBolitasDFS(t->tablero) << endl;
+}

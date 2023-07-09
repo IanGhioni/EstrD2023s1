@@ -16,5 +16,5 @@ void MoverNTInf(TableroInfinito t, Dir   dir,   int n); /* PRECOND: la dir es v√
 int  nroBolitasTInf(TableroInfinito t, Color color);    /* PRECOND: el color es v√°lido */
 
 void LiberarTInf(TableroInfinito t);
-
+void cantDeBolitasEnElTablero(TableroInfinito t);
 void PrintRepTInf(TableroInfinito t);

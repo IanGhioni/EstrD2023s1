@@ -5,17 +5,19 @@ using namespace std;
 #include "TableroInfinito.h"
 
 int main(){
-  // g++ -o app main.cpp TableroInfinito.cpp TableroInfinito.h BiBST.h BiBST.cpp
+  /* 
+g++ -o app main.cpp TableroInfinito.cpp TableroInfinito.h BiBST.h BiBST.cpp QueueBiBST.cpp QueueBiBST.h StackBiBST.cpp StackBiBST.h
+  */
   TableroInfinito t = TInfInicial();
-  PonerNTInf(t, ROJO,  1);  PrintRepTInf(t);
+  PonerNTInf(t, ROJO,  1);  //PrintRepTInf(t);
   PonerNTInf(t, AZUL,  1);
   MoverNTInf(t, OESTE, 1);
-  PonerNTInf(t, VERDE, 1);  PrintRepTInf(t);
+  PonerNTInf(t, VERDE, 1);  //PrintRepTInf(t);
   MoverNTInf(t, OESTE, 4);
   PonerNTInf(t, ROJO,  1);
-  PonerNTInf(t, AZUL,  2);  PrintRepTInf(t);
+  PonerNTInf(t, AZUL,  2);  //PrintRepTInf(t);
   MoverNTInf(t, ESTE,  5);
-  PonerNTInf(t, ROJO,  2);  PrintRepTInf(t);
+  PonerNTInf(t, ROJO,  2);  //PrintRepTInf(t);
   int r = nroBolitasTInf(t, ROJO);
   int b = nroBolitasTInf(t, AZUL);
   MoverNTInf(t, ESTE,  1);
@@ -28,8 +30,8 @@ int main(){
   cout << "Test nroBolitas(Rojo) ( 0,0) - "; PRINTCOLORN(ROJO, r);  cout << " (debe ser `Rojo: 3`)" << endl;
   cout << "Test nroBolitas(Azul) ( 0,0) - "; PRINTCOLORN(AZUL, b);  cout << " (debe ser `Azul: 1`)" << endl;
   cout << "Test nroBolitas(Azul) (-5,0) - "; PRINTCOLORN(AZUL, b2); cout << " (debe ser `Azul: 2`)" << endl;
-
-  LiberarTInf(t);
+  
+  cantDeBolitasEnElTablero(t);
 }
 
 /* La salida de este programa debe ser la siguiente:
